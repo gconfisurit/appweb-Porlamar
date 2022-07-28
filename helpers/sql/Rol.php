@@ -5,7 +5,7 @@ class Rol extends Conectar
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql = "SELECT id, descripcion FROM Roles";
 
@@ -17,7 +17,7 @@ class Rol extends Conectar
     public static function getById($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql="SELECT id, descripcion FROM Roles WHERE id = ?";
 

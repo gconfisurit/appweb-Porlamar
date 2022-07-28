@@ -13,8 +13,10 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- LOGO SUPERIOR MENU -->
     <a href="<?php echo URL_APP; ?>principal.php" class="brand-link">
-        <img src="<?php echo URL_LIBRARY; ?>dist/img/AdminLTELogo.png " alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light"><?=Strings::titleFromJson('nombre_app')?></span>
+    <center>
+	  <img src="<?php echo URL_LIBRARY; ?>dist/img/logo_empresa.png" class="center-block" alt="Logo de Empresa" width="200" height="90" style="opacity: .99">
+    </center>
+       
     </a>
     <!-- PERFIL DE USUARIO -->
     <div class="sidebar">

@@ -1,24 +1,22 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
-require_once '../../config/conexion.php';
+require_once("../../config/conexion.php");
 
 if (!isset($_SESSION['cedula'])) {
-    session_destroy();
-    Url::redirect(URL_APP);
+    session_destroy(); Url::redirect(URL_APP);
 }
 ?>
 <!DOCTYPE html>
 <html>
-<?php require_once '../header.php'; ?>
+<?php require_once("../header.php");?>
 <body class="hold-transition sidebar-mini layout-fixed">
-	<?php
- require_once '../menu_lateral.php';
- if (!PermisosHelpers::verficarAcceso(Functions::getNameDirectory())) {
-     include '../errorNoTienePermisos.php';
- } else {
-      ?>
+	<?php require_once("../menu_lateral.php");
+    if (!PermisosHelpers::verficarAcceso( Functions::getNameDirectory() )) {
+        include ('../errorNoTienePermisos.php');
+    }
+    else { ?>
         <!-- BOX COMPLETO DE LA VISTA -->
         <div class="content-wrapper">
 		<!-- BOX DE LA MIGA DE PAN -->
@@ -71,9 +69,7 @@ if (!isset($_SESSION['cedula'])) {
                                 </div>
                             </div>
 							<div class="col-sm-3">
-							<label for="vutil" class="col-form-label col-sm-6"><?= Strings::titleFromJson(
-           'descrip_vend'
-       ) ?></label>
+							<label for="vutil" class="col-form-label col-sm-4"><?=Strings::titleFromJson('descrip_vend')?></label>
                                 <select class="form-control custom-select" name="vendedor" id="vendedor" style="width: 100%;" required>
                                     <!-- lista de vendedores se carga por ajax -->
                                 </select>
@@ -83,9 +79,7 @@ if (!isset($_SESSION['cedula'])) {
 					</div>
 					<!-- BOX BOTON DE PROCESO -->
 					<div class="card-footer">
-						<button type="submit" class="btn btn-success" id="btn_clientescodnestle"><i class="fa fa-search" aria-hidden="true"></i><?= Strings::titleFromJson(
-          'boton_consultar'
-      ) ?></button>
+						<button type="submit" class="btn btn-success" id="btn_clientescodnestle"><i class="fa fa-search" aria-hidden="true"></i><?=Strings::titleFromJson('boton_consultar')?></button>
 					</div>
 				</div>
 
@@ -98,38 +92,24 @@ if (!isset($_SESSION['cedula'])) {
 						<table class="table table-hover table-condensed table-bordered table-striped text-center" style="width:100%;" id="clientescodnestle_data">
 							<thead style="background-color: #17A2B8;color: white;">
 								<tr>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'ruta'
-         ) ?>"><?= Strings::titleFromJson('ruta') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'codclie'
-         ) ?>"><?= Strings::titleFromJson('codclie') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'razon_social'
-         ) ?>"><?= Strings::titleFromJson('razon_social') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'rif'
-         ) ?>"><?= Strings::titleFromJson('rif') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'fecha_apertura'
-         ) ?>"><?= Strings::titleFromJson('fecha_apertura') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'dia_visita'
-         ) ?>"><?= Strings::titleFromJson('dia_visita') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'clasificacion'
-         ) ?>"><?= Strings::titleFromJson('clasificacion') ?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('ruta')?>"><?=Strings::titleFromJson('ruta')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('codclie')?>"><?=Strings::titleFromJson('codclie')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('razon_social')?>"><?=Strings::titleFromJson('razon_social')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('rif')?>"><?=Strings::titleFromJson('rif')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('fecha_apertura')?>"><?=Strings::titleFromJson('fecha_apertura')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('dia_visita')?>"><?=Strings::titleFromJson('dia_visita')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('clasificacion')?>"><?=Strings::titleFromJson('clasificacion')?></th>
 								</tr>
 							</thead>
 							<tfoot style="background-color: #ccc;color: white;">
 								<tr>
-									<th class="text-center"><?= Strings::titleFromJson('ruta') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('codclie') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('razon_social') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('rif') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('fecha_apertura') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('dia_visita') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('clasificacion') ?></th>
+									<th class="text-center"><?=Strings::titleFromJson('ruta')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('codclie')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('razon_social')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('rif')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('fecha_apertura')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('dia_visita')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('clasificacion')?></th>
 								</tr>
 							</tfoot>
 							<tbody>
@@ -138,19 +118,15 @@ if (!isset($_SESSION['cedula'])) {
 						</table>
 						<!-- BOX BOTONES DE REPORTES-->
 						<div align="center">
-							<button type="button" class="btn btn-info" id="btn_excel"><?= Strings::titleFromJson(
-           'boton_excel'
-       ) ?></button>
-							<button type="button" class="btn btn-info" id="btn_pdf"><?= Strings::titleFromJson(
-           'boton_pdf'
-       ) ?></button>
+							<button type="button" class="btn btn-info" id="btn_excel"><?=Strings::titleFromJson('boton_excel')?></button>
+							<button type="button" class="btn btn-info" id="btn_pdf"><?=Strings::titleFromJson('boton_pdf')?></button>
 						</div>
 					</div>
 				</section>
 			</div>
-        <?php require_once '../footer.php'; ?>
+        <?php require_once("../footer.php");?>
         <script type="text/javascript" src="clientescodnestle.js"></script><?php
- }
- ?>
+    }
+    ?>
 </body>
 </html>

@@ -51,7 +51,7 @@ $(document).on("click", "#btn_consultar", function () {
                     url: "facturasporcobrar_controlador.php?op=buscar_facturasporcobrar",
                     type: "post",
                     dataType: "json",
-                    data: {fechai: fechai, fechaf: fechaf},
+                    data: {fechai:fechai, fechaf:fechaf},
                     beforeSend: function () {
                         SweetAlertLoadingShow();
                     },

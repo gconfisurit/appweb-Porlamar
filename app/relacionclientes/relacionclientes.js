@@ -85,8 +85,9 @@ $(document).ready(function () {
 //la funcion guardaryeditar(e); se llama cuando se da click al boton submit
 function guardaryeditar(e) {
     let isError = false;
-    let cliente = $('#codclie').val();
-    console.log("guardar y editar "+cliente);
+    let cliente = $('#codclie').val(); 
+    let id_cliente = $('#id_cliente').val(); id_cliente
+    console.log("guardar y editar " + id_cliente);
     // return;
 
     e.preventDefault(); //No se activará la acción predeterminada del evento

@@ -27,9 +27,36 @@ class PDF extends FPDF
     {
         $despachos  = new Despachos();
 
-        $cabeceraDespacho = $despachos->getCabeceraDespacho($_GET['correlativo']);
-        $chofer = Choferes::getByDni($cabeceraDespacho[0]['ID_Chofer']);
-        $vehiculo = Vehiculo::getById($cabeceraDespacho[0]['ID_Vehiculo']);
+       $modelo= $capacidad =$descripcion= $cedula_chofer=  $placa=  $fechad =  $nota = '';
+
+
+        $cabeceraDespacho = Choferes::getCabeceraDespacho($_GET['correlativo']);
+
+         foreach ($cabeceraDespacho as $row) {
+
+            $cedula_chofer=$row['cedula_chofer'];
+            $placa=$row['placa'];
+            $fechad = $row['fechad'];
+            $nota = $row['nota'];
+      
+         }
+
+        $chofer = Choferes::getByDni( $cedula_chofer);
+
+        foreach ($chofer as $row2) {
+            $descripcion = $row2['descripcion'];
+         }
+
+
+
+        $vehiculo = Vehiculo::getById($placa);
+
+        foreach ($vehiculo as $row1) {
+
+            $modelo = $row1['modelo'];
+            $capacidad = $row1['capacidad'];
+      
+         }
         // Logo
         $this->Image(PATH_LIBRARY.'build/images/logo.png', 10, 8, 33);
         // Arial bold 15
@@ -44,11 +71,11 @@ class PDF extends FPDF
         $this->Cell(90,7,'Nro de Despacho: '.str_pad($GLOBALS["correlativo"], 8, 0, STR_PAD_LEFT),0,0,'C');
         $this->Ln();
         $this->SetFont ('Arial','',7);
-        $this->Cell(90,7,'Fecha Despacho: '.date(FORMAT_DATE, strtotime($cabeceraDespacho[0]['fechad'])),0,0,'L');
-        $this->Cell(90,7,'Vehiculo de Carga: : '.$vehiculo[0]['placa'].'  '.$vehiculo[0]['modelo'].'  '.$vehiculo[0]['capacidad'].'Kg',0,0,'L');
+        $this->Cell(90,7,'Fecha Despacho: '.date(FORMAT_DATE, strtotime($fechad)),0,0,'L');
+        $this->Cell(90,7,'Vehiculo de Carga : '.$placa.'  '.$modelo.'  '.$capacidad.'Kg',0,0,'L');
         $this->Ln();
 
-        $this->Cell(150,7,'Destino : '.$cabeceraDespacho[0]['Destino']." - ".$chofer[0]['Nomper'],0,0,'L');
+        $this->Cell(150,7,'Destino : '.$nota." - ".$descripcion,0,0,'L');
         $this->Ln();
 
         $this->Cell(62,7,'Listado de Productos a Despachar',0,0,'C');
@@ -78,8 +105,8 @@ $lote = "";
 $documentos = $despachos->getDocumentosPorCorrelativo($correlativo);
 $num = count($documentos);
 foreach ($documentos AS $item) {
-    $tipodoc = ($item['tipofac']=='A') ? "FACT" : "N/E";
-    $lote .= " ".$item['numerod']." (".$tipodoc."),";
+    $tipodoc = ($item['TipoFac']=='A') ? "FACT" : "N/E";
+    $lote .= " ".$item['numeros']." (".$tipodoc."),";
 }
 
 //le quitamos 1 caracter para quitarle la ultima coma

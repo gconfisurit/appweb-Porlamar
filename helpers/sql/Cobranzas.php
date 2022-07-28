@@ -7,7 +7,7 @@ class Cobranzas extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT V.CODVEND, V.fechae, V.numerod, V.NumeroFac, V.MONTO, V.Descrip
                 FROM (

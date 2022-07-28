@@ -33,6 +33,7 @@ $sellin = new sellin();
 $fechai = $_GET['fechai'];
 $fechaf = $_GET['fechaf'];
 $marca = $_GET['marca'];
+$tipo = $_GET['tipo'];
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -65,10 +66,12 @@ $spreadsheet->getActiveSheet()->mergeCells('A1:C1');
 /** TITULO DE LA TABLA **/
 $sheet->setCellValue('A7', Strings::titleFromJson('codigo_prod'))
     ->setCellValue('B7', Strings::titleFromJson('descrip_prod'))
-    ->setCellValue('C7', Strings::titleFromJson('compra'))
-    ->setCellValue('D7', Strings::titleFromJson('devolucion_compra'))
-    ->setCellValue('E7', Strings::titleFromJson('total'))
-    ->setCellValue('F7', Strings::titleFromJson('marca_prod'));
+    ->setCellValue('C7', "Compra de Factura")
+    ->setCellValue('D7', "Devolución de Factura")
+    ->setCellValue('E7', "Compra de Notas de Entregas")
+    ->setCellValue('F7', "Devolución de Notas de Entregas")
+    ->setCellValue('G7', Strings::titleFromJson('total'))
+    ->setCellValue('H7', Strings::titleFromJson('marca_prod'));
 
 $style_title = new Style();
 $style_title->applyFromArray(
@@ -76,20 +79,63 @@ $style_title->applyFromArray(
 );
 
 //estableceer el estilo de la cabecera de la tabla
-$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:F7');
+$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:H7');
 
-$query =  $sellin->getsellin($fechai, $fechaf, $marca);
+$query =  $sellin->getsellin($fechai, $fechaf, $marca, $tipo);
 $row = 8;
 foreach ($query as $i) {
     $sheet = $spreadsheet->getActiveSheet();
 
+ if($tipo=='f'){
+
     $sheet->setCellValue('A' . $row, $i['coditem']);
     $sheet->setCellValue('B' . $row, utf8_decode($i['producto']));
-    $sheet->setCellValue('C' . $row, Strings::rdecimal($i['compras'], 2));
-    $sheet->setCellValue('D' . $row, Strings::rdecimal($i['devol'], 2));
-    $sheet->setCellValue('E' . $row, Strings::rdecimal($i['total'],2));
-    $sheet->setCellValue('F' . $row, $i['marca']);
+    $sheet->setCellValue('C' . $row, number_format(0, 2));
+    $sheet->setCellValue('D' . $row, number_format(0, 2));
+    $sheet->setCellValue('E' . $row, number_format($i['compras'], 2));
+    $sheet->setCellValue('F' . $row, number_format($i['devol'], 2));
+    $sheet->setCellValue('G' . $row, number_format($i['total'],2));
+    $sheet->setCellValue('H' . $row, $i['marca']);
 
+
+    }else{
+
+             if($tipo=='n'){
+
+                $sheet->setCellValue('A' . $row, $i['coditem']);
+                $sheet->setCellValue('B' . $row, utf8_decode($i['producto']));
+                $sheet->setCellValue('C' . $row, number_format($i['compras'], 2));
+                $sheet->setCellValue('D' . $row, number_format($i['devol'], 2));
+                $sheet->setCellValue('E' . $row, number_format(0, 2));
+                $sheet->setCellValue('F' . $row, number_format(0, 2));
+                $sheet->setCellValue('G' . $row, number_format($i['total'],2));
+                $sheet->setCellValue('H' . $row, $i['marca']);
+
+
+            }else{
+
+                 if($tipo=='Todos'){
+
+                    $sheet->setCellValue('A' . $row, $i['coditem']);
+                    $sheet->setCellValue('B' . $row, utf8_decode($i['producto']));
+                    $sheet->setCellValue('C' . $row, number_format($i['compras'], 2));
+                    $sheet->setCellValue('D' . $row, number_format($i['devol'], 2));
+                    $sheet->setCellValue('E' . $row, number_format($i['compras_notas'], 2));
+                    $sheet->setCellValue('F' . $row, number_format($i['devol_notas'], 2));
+                    $sheet->setCellValue('G' . $row, number_format($i['total'],2));
+                    $sheet->setCellValue('H' . $row, $i['marca']);
+
+
+                    
+                    }
+
+                }
+
+
+            }
+
+
+    
     /** centrarlas las celdas **/
     $spreadsheet->getActiveSheet()->getStyle('A'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('B'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
@@ -97,6 +143,8 @@ foreach ($query as $i) {
     $spreadsheet->getActiveSheet()->getStyle('D'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('E'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('F'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('G'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('H'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
 
     $row++;
 }

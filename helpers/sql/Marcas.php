@@ -6,7 +6,7 @@ class Marcas extends Conectar {
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT DISTINCT(marca) FROM saprod WHERE activo = '1' AND marca IS NOT NULL ORDER BY marca ASC";
 
@@ -18,7 +18,7 @@ class Marcas extends Conectar {
     public static function getByName($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT DISTINCT(marca) FROM saprod WHERE activo = '1' AND marca=?";
 

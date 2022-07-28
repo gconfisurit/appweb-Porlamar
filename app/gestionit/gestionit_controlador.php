@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //llamar a la conexion de la base de datos
 require_once("../../config/conexion.php");

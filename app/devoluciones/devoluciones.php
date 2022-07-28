@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -10,7 +10,8 @@ if (!isset($_SESSION['cedula'])) {
 ?>
 <!DOCTYPE html>
 <html>
-<?php require_once("../header.php");?>
+<?php require_once("../header.php");
+include 'modal/editar_motivo.html'?>
 <body class="hold-transition sidebar-mini layout-fixed">
 	<?php require_once("../menu_lateral.php");
     if (!PermisosHelpers::verficarAcceso( Functions::getNameDirectory() )) {
@@ -68,7 +69,6 @@ if (!isset($_SESSION['cedula'])) {
                                     <div class="form-check form-check-inline">
                                 <label for="orden">Tipo de Transacción</label>
 									<select class="form-control custom-select" name="tipo" id="tipo" style="width: 100%;" required>
-                                    <option name="" value="Todos">Todos</option>
                                     <option name="" value="B">Facturas</option>
                                     <option name="" value="D">Notas de Entrega</option>
                                     </select>
@@ -101,6 +101,8 @@ if (!isset($_SESSION['cedula'])) {
 									<th class="text-center" title="<?=Strings::DescriptionFromJson('cliente')?>"><?=Strings::titleFromJson('cliente')?></th>
 									<th class="text-center" title="<?=Strings::DescriptionFromJson('chofer')?>"><?=Strings::titleFromJson('chofer')?></th>
 									<th class="text-center" title="<?=Strings::DescriptionFromJson('monto')?>"><?=Strings::titleFromJson('monto')?></th>
+									<th class="text-center" title="Motivo">Motivo</th>
+									<th class="text-center" title="Opcion">Opcion</th>
 								</tr>
 							</thead>
 							<tfoot style="background-color: #ccc;color: white;">
@@ -113,6 +115,8 @@ if (!isset($_SESSION['cedula'])) {
 									<th class="text-center"><?=Strings::titleFromJson('cliente')?></th>
 									<th class="text-center"><?=Strings::titleFromJson('chofer')?></th>
                                     <th class="text-center"><?=Strings::titleFromJson('monto')?></th>
+									<th class="text-center">Motivo</th>
+									<th class="text-center">Opcion</th>
 								</tr>
 							</tfoot>
 							<tbody>

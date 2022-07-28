@@ -96,7 +96,14 @@ $(document).on("click", "#btn_consultar", function () {
     let fechai = $("#fechai").val();
     let fechaf = $("#fechaf").val();
     let vendedor = $("#vendedor").val();
-    let marca = $("#marca").val();
+    let marca ='';
+
+    if ($("#marcad").val()) {
+         marca = $("#marcad").val();
+    } else {
+         marca = $("#marca").val();
+    }
+
     let tipo = $('input:radio[name=tipo]:checked').val()
 
     if (!estado_vacio && fechai !== "" && fechaf !== "" && vendedor !== "" && marca !== "") {

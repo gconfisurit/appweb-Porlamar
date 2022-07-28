@@ -86,11 +86,17 @@ $(document).ready(function(){
 
 //ACCION AL PRECIONAR EL BOTON.
 $(document).on("click", "#btn_consultar", function () {
-
+    $("#ventaskgedvporcategoria_data").dataTable().fnDestroy();
     var fechai = $("#fechai").val();
     var fechaf = $("#fechaf").val();
     var vendedor = $("#vendedor").val();
-    var instancia = $("#instancia").val();
+    var instancia = '';
+
+    if ($("#instanciad").val()) {
+        instancia = $("#instanciad").val();
+    } else {
+        instancia = $("#instancia").val();
+    }
 
     if (estado_minimizado) {
         $("#tabla").hide();
@@ -165,6 +171,8 @@ $(document).on("click", "#btn_consultar", function () {
     
                         $('#total_registros').html(
 
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Unidad Total:   <code>' + data.totalCant + '  Bultos</code>   '+
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Kilogramo Total:   <code>' + data.totalPeso + '  Kg</code>   '+
                             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.totalMonto + '  Bs</code>   '
                         )
 

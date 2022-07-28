@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -18,7 +18,7 @@ if (!isset($_SESSION['cedula'])) {
     }
     else { ?>
 	    <!-- BOX COMPLETO DE LA VISTA -->
-	    <div class="content-wrapper">
+	 <div class="content-wrapper">
 		<!-- BOX DE LA MIGA DE PAN -->
 		<section class="content-header">
 			<div class="container-fluid">

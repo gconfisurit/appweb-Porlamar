@@ -10,41 +10,62 @@ class Tabladinamica extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
-        $marca = (!hash_equals('-', $data['marca'])) ? " AND  SAITEMFAC.codvend LIKE ?" : "";
-        $edv = (!hash_equals('-', $data['edv'])) ? " AND saprod.marca LIKE ?" : "";
+          $marca = (!hash_equals('-', $data['marca'])) ? " AND saprod.marca LIKE ?" : "";
+        $edv = (!hash_equals('-', $data['edv'])) ? " AND  sanota.codvend LIKE ?" : "";
+
+         $condicion1="";
+         $condicion2="";
+
+        if($data['edv']=='-'){
+            $condicion1=" AND saprod.marca LIKE ?";
+         }
+
+         if($data['marca']=='-'){
+            $condicion2=" AND  SAITEMFAC.codvend LIKE ?";
+         }
+
+       /* echo "<script>console.log('fechai: " . $data['fechai'] . "' );</script>";
+        echo "<script>console.log('fechaf: " . $data['fechaf'] . "' );</script>";
+        echo "<script>console.log('marca: " . $data['marca'] . "' );</script>";
+        echo "<script>console.log('edv: " . $data['edv'] . "' );</script>";*/
 
         //QUERY
         $sql= "SELECT
                 (SELECT codvend FROM savend WHERE savend.codvend = SAITEMFAC.codvend) AS codvend,
                 (SELECT descrip FROM savend WHERE savend.codvend = SAITEMFAC.codvend) AS vendedor,
                 (SELECT clase FROM savend WHERE savend.codvend = SAITEMFAC.codvend) AS clasevend,
-                SAITEMFAC.tipofac AS tipo,
+                SAITEMFAC.TipoFac AS tipo,
                 SAITEMFAC.numerod AS numerod,
                 (SELECT codclie FROM SAFACT WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS codclie,
-                (SELECT Descrip FROM SAFACT WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS cliente,
+                (SELECT Descrip as ID3 FROM SAFACT WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS cliente,
                 (SELECT saclie_01.codnestle FROM SAFACT INNER JOIN saclie_01 ON SAFACT.codclie = saclie_01.codclie WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS codnestle,
                 (SELECT saclie_01.clasificacion FROM SAFACT INNER JOIN saclie_01 ON SAFACT.codclie = saclie_01.codclie WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS clasificacion,
                 SAITEMFAC.coditem,
-                SAITEMFAC.Descrip1 AS descripcion,
+                SAITEMFAC.Descrip1 as descripcion,
                 (SELECT marca FROM SAPROD WHERE SAITEMFAC.coditem = SAPROD.CodProd) AS marca,
                 SAITEMFAC.cantidad,
                 (CASE SAITEMFAC.EsUnid WHEN 1 then 'PAQ' ELSE 'BULT' END) AS unid,
                 (CASE SAITEMFAC.EsUnid WHEN 1 then cantidad ELSE cantidad*cantempaq END) AS paq,
                 (CASE SAITEMFAC.EsUnid WHEN 1 then cantidad/cantempaq ELSE cantidad END) AS bul,
                 (SELECT descrip FROM sainsta WHERE sainsta.codinst = saprod.codinst) AS instancia,
-                SAITEMFAC.TotalItem AS montod,
-                SAITEMFAC.Descto AS descuento,
+                --(CASE SAITEMFAC.esexento WHEN 1  then SAITEMFAC.TotalItem ELSE SAITEMFAC.TotalItem / 1.16 END) AS montod,
+                --SAITEMNOTA.total AS montod,
+                --(CASE SAITEMFAC.esexento WHEN 1  then SAITEMFAC.Descto ELSE SAITEMFAC.Descto / 1.16 END) AS descuento,
+                --SAITEMNOTA.descuento AS descuento,
+                SAITEMFAC.TotalItem as montod,
+                SAITEMFAC.Descto as descuento,
                 (SELECT tasa FROM SAFACT WHERE SAFACT.numerod = SAITEMFAC.numerod AND SAFACT.tipofac = SAITEMFAC.tipofac) AS factor,
                 SAITEMFAC.fechae,
-                SAITEMFAC.EsExento,
+                SAITEMFAC.esexento,
                 (CASE SAITEMFAC.EsUnid WHEN 1  then (cantidad/cantempaq)*saprod.tara ELSE cantidad*saprod.tara END) AS kg,
                 CONCAT('(',MONTH(SAITEMFAC.fechae),')','-',UPPER(DATENAME(MONTH,SAITEMFAC.fechae)),'-(',YEAR(SAITEMFAC.fechae),')') MES
-                FROM SAITEMFAC INNER JOIN saprod ON SAITEMFAC.coditem = saprod.codprod WHERE
-                DATEADD(dd, 0, DATEDIFF(dd, 0, SAITEMFAC.FechaE)) between ? AND ? $marca $edv AND (SAITEMFAC.tipofac = 'A' OR SAITEMFAC.Tipofac = 'B')  ORDER BY SAITEMFAC.fechae";
+                 FROM SAITEMFAC INNER JOIN saprod ON SAITEMFAC.coditem = saprod.codprod
+                 INNER JOIN SAFACT ON SAITEMFAC.numerod = SAFACT.numerod AND SAITEMFAC.tipofac = SAFACT.tipofac WHERE
+                 DATEADD(dd, 0, DATEDIFF(dd, 0, SAITEMFAC.FechaE)) between ? AND ?  $marca $edv AND (SAITEMFAC.tipofac = 'A' OR SAITEMFAC.Tipofac = 'B') ORDER BY SAITEMFAC.fechae asc";
 
         //PREPARACION DE LA CONSULTA PARA EJECUTARLA.
         $sql = $conectar->prepare($sql);
@@ -62,7 +83,7 @@ class Tabladinamica extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
@@ -118,7 +139,7 @@ class Tabladinamica extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
@@ -147,7 +168,7 @@ class Tabladinamica extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
@@ -173,7 +194,7 @@ class Tabladinamica extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 

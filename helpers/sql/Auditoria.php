@@ -5,7 +5,7 @@ class Auditoria extends Conectar {
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, fecha, usuario, accion FROM Auditoria";
 
@@ -17,7 +17,7 @@ class Auditoria extends Conectar {
     public static function getByUser($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, fecha, usuario, accion FROM Auditoria WHERE usuario = ?";
 
@@ -32,7 +32,7 @@ class Auditoria extends Conectar {
         $i = 0;
         date_default_timezone_set('America/Caracas');
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "INSERT INTO Auditoria(fecha, usuario, accion) VALUES(?,?,?)";
 

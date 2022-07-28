@@ -6,7 +6,7 @@ class CausasRechazos extends Conectar {
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, descripcion, color FROM M_rechazos";
 
@@ -18,7 +18,7 @@ class CausasRechazos extends Conectar {
     public static function getByNameOrId($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, descripcion, color FROM M_rechazos WHERE id=? OR descripcion=?";
 

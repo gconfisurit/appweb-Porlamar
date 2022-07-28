@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -120,14 +120,14 @@ if (!isset($_SESSION['cedula'])) {
                                     <th class="text-center" title="<?=Strings::DescriptionFromJson('marca_prod')?>"><?=Strings::titleFromJson('marca_prod')?></th>
 
                                     <th class="text-center" title="<?=Strings::DescriptionFromJson('bultos')?>"><?=Strings::titleFromJson('bultos')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio1_bulto')?>"><?=Strings::titleFromJson('precio1_bulto')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio2_bulto')?>"><?=Strings::titleFromJson('precio2_bulto')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio3_bulto')?>"><?=Strings::titleFromJson('precio3_bulto')?></th>
+                                    <th class="text-center" title="Precio 1 Bulto $">Precio 1 Bulto $</th>
+                                    <th class="text-center" title="Precio 2 Bulto $">Precio 2 Bulto $</th>
+                                    <th class="text-center" title="Precio 3 Bulto $">Precio 3 Bulto $</th>
 
                                     <th class="text-center" title="<?=Strings::DescriptionFromJson('paquetes')?>"><?=Strings::titleFromJson('paquetes')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio1_paquete')?>"><?=Strings::titleFromJson('precio1_paquete')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio2_paquete')?>"><?=Strings::titleFromJson('precio2_paquete')?></th>
-                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('precio3_paquete')?>"><?=Strings::titleFromJson('precio3_paquete')?></th>
+                                    <th class="text-center" title="Precio 1 Paquete $">Precio 1 Paquete $</th>
+                                    <th class="text-center" title="Precio 2 Paquete $">Precio 2 Paquete $</th>
+                                    <th class="text-center" title="Precio 3 Paquete $">Precio 3 Paquete $</th>
                                     <th class="text-center" title="<?=Strings::DescriptionFromJson('cubicaje')?>"><?=Strings::titleFromJson('cubicaje')?></th>
                                 </tr>
                             </thead>

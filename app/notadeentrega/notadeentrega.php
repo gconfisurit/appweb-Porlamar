@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -160,6 +160,8 @@ else { ?>
                             </tr>
                             <tr>
                                 <th id="tfoot_sinderecho" height="21" colspan="6" style="text-align: center;">SIN DERECHO A CR&Eacute;DITO FISCAL. <br>VERIFIQUE SU MERCANCIA, NO SE ACEPTAN RECLAMOS DESPUES DE HABER FIRMADO Y SELLADO ESTA NOTA DE ENTREGA.</th>
+                            </tr>
+                             <tr>
                             </tr>
                         </tfoot>
 

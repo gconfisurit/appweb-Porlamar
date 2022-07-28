@@ -89,7 +89,7 @@ class Usuario extends Conectar
     public function eliminar_usuario($dni) {
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion();
         parent::set_names();
 

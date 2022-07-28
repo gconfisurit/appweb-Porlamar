@@ -6,7 +6,7 @@ class Empresa extends Conectar {
     public static function getInfo()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "select descrip, direc1, telef, rif from SACONF";
 
@@ -18,7 +18,7 @@ class Empresa extends Conectar {
     public static function getName()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "select descrip from SACONF";
 

@@ -6,7 +6,7 @@ class cliente extends Conectar {
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT * FROM savend WHERE activo = '1' ORDER BY CodVend ASC";
 

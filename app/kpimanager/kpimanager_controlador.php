@@ -134,7 +134,7 @@ switch ($_GET["op"]) {
         $values = array(
             'supervisor'          => $_POST["supervisor"],
             'ruta'                => $_POST["ruta"],
-            'cedula'              => $_POST["cedula"],
+            'cedula'              => '',
             'nombre'              => $_POST["nombre"],
             'obj_ventas_kg'       => $_POST["obj_ventas_kg"],
             'obj_ventas_und'      => $_POST["obj_ventas_und"],
@@ -142,7 +142,7 @@ switch ($_GET["op"]) {
             'ubicacion'           => $_POST["ubicacion"],
             'drop_size'           => $_POST["drop_size"],
             'clase'               => $_POST["clase"],
-            'obj_clientes_captar' => $_POST["obj_clientes_captar"],
+            'obj_clientes_captar' => '',
             'obj_especial'        => $_POST["obj_especial"],
             'deposito'            => $_POST["deposito"],
             'logro_obj_especial'  => $_POST["logro_obj_especial"],
@@ -184,7 +184,7 @@ switch ($_GET["op"]) {
             }
             if ($change > 0) {
                 # insertamos el dato de historico y obtenemos el codigo de insersion
-                $hist_cambio_kpi = $kpiManager->insertar_historico_cambio_kpi($_SESSION['cedula'], $values['ruta']);
+                $hist_cambio_kpi = $kpiManager->insertar_historico_cambio_kpi('1', $values['ruta']);
                 if ($hist_cambio_kpi != -1) {
                     for($i=0; $i < count(array_keys($antesActualizar[0])); $i++) {
                         if($antesActualizar[0][array_keys($antesActualizar)[$i]] != $array[$i]) {

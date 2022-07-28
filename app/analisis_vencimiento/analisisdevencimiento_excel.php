@@ -1,13 +1,13 @@
 <?php
 //LLAMAMOS A LA CONEXION BASE DE DATOS.
 //LLAMAMOS A LA CONEXION BASE DE DATOS.
-require_once '../../config/conexion.php';
+require_once("../../config/conexion.php");
 
-require_once PATH_LIBRARY . 'jpgraph4.3.4/src/jpgraph.php';
-require_once PATH_LIBRARY . 'jpgraph4.3.4/src/jpgraph_bar.php';
-require_once PATH_LIBRARY . 'jpgraph4.3.4/src/jpgraph_line.php';
+require_once ( PATH_LIBRARY.'jpgraph4.3.4/src/jpgraph.php' );
+require_once ( PATH_LIBRARY.'jpgraph4.3.4/src/jpgraph_bar.php' );
+require_once ( PATH_LIBRARY.'jpgraph4.3.4/src/jpgraph_line.php' );
 
-require PATH_VENDOR . 'autoload.php';
+require (PATH_VENDOR.'autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -26,7 +26,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Chart\Layout;
 
 //LLAMAMOS AL MODELO DE ACTIVACIONCLIENTES
-require_once 'analisisdevencimiento_modelo.php';
+require_once("analisisdevencimiento_modelo.php");
 
 //INSTANCIAMOS EL MODELO
 $analisis = new analisisdevencimiento();
@@ -37,19 +37,13 @@ $proveedor = $_GET['proveedor'];
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$spreadsheet
-    ->getActiveSheet()
-    ->getPageSetup()
-    ->setPaperSize(PageSetup::PAPERSIZE_A4);
-foreach (range('A', 'G') as $columnID) {
-    $spreadsheet
-        ->getActiveSheet()
-        ->getColumnDimension($columnID)
-        ->setAutoSize(true);
+$spreadsheet->getActiveSheet()->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
+foreach(range('A','G') as $columnID) {
+    $spreadsheet->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
 }
 
 // Logo
-$gdImage = imagecreatefrompng(PATH_LIBRARY . 'build/images/logo.png');
+$gdImage = imagecreatefrompng(PATH_LIBRARY.'build/images/logo.png');
 $objDrawing = new MemoryDrawing();
 $objDrawing->setName('Sample image');
 $objDrawing->setDescription('TEST');
@@ -62,22 +56,14 @@ $objDrawing->setCoordinates('E1');
 $objDrawing->setWorksheet($spreadsheet->getActiveSheet());
 
 /** DATOS DEL REPORTE **/
-$spreadsheet
-    ->getActiveSheet()
-    ->getStyle('A1:G1')
-    ->getFont()
-    ->setSize(25);
+$spreadsheet->getActiveSheet()->getStyle('A1:G1')->getFont()->setSize(25);
 $sheet->setCellValue('A1', 'REPORTE DE ANALISIS DE VENCIMIENTO PROVEEDORES');
-$sheet->setCellValue(
-    'A5',
-    'fecha tope:  ' . date(FORMAT_DATE, strtotime($fechaf))
-);
+$sheet->setCellValue('A5', 'fecha tope:  '. date(FORMAT_DATE, strtotime($fechaf)));
 
 $spreadsheet->getActiveSheet()->mergeCells('A1:C1');
 
 /** TITULO DE LA TABLA **/
-$sheet
-    ->setCellValue('A7', utf8_decode(Strings::titleFromJson('codprov')))
+$sheet->setCellValue('A7', utf8_decode(Strings::titleFromJson('codprov')))
     ->setCellValue('B7', Strings::titleFromJson('razon_social'))
     ->setCellValue('C7', Strings::titleFromJson('numerod'))
     ->setCellValue('D7', Strings::titleFromJson('fecha_documento'))
@@ -86,132 +72,45 @@ $sheet
     ->setCellValue('G7', Strings::titleFromJson('monto'));
 
 $style_title = new Style();
-$style_title->applyFromArray(Excel::styleHeadTable());
+$style_title->applyFromArray(
+    Excel::styleHeadTable()
+);
+
 
 //estableceer el estilo de la cabecera de la tabla
 $spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:G7');
 
-$query = $analisis->getanalisisdevencimiento($fechai, $fechaf, $proveedor);
+$query = $analisis->getanalisisdevencimiento( $fechai, $fechaf, $proveedor);
 
-$dias = $analisis->dias_transcurridos($fechai, $fechaf);
+$dias = $analisis->dias_transcurridos( $fechai, $fechaf);
 $row = 8;
 foreach ($query as $i) {
-    $Montonew = number_format($i['Monto'], 2, ',', '.');
+    $Montonew = number_format($i["Monto"], 2, ',', '.');
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setCellValue('A' . $row, $i['CodProv']);
     $sheet->setCellValue('B' . $row, utf8_encode($i['Descrip']));
     $sheet->setCellValue('C' . $row, $i['NumeroD']);
-    $sheet->setCellValue(
-        'D' . $row,
-        date(FORMAT_DATE, strtotime($i['FechaE']))
-    );
-    $sheet->setCellValue(
-        'E' . $row,
-        date(FORMAT_DATE, strtotime($i['FechaV']))
-    );
+    $sheet->setCellValue('D' . $row, date(FORMAT_DATE, strtotime($i['FechaE'])));
+    $sheet->setCellValue('E' . $row, date(FORMAT_DATE, strtotime($i['FechaEV'])));
     $sheet->setCellValue('F' . $row, utf8_encode($dias));
     $sheet->setCellValue('G' . $row, $Montonew);
 
     /** centrar las celdas **/
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('A' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('B' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('C' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('D' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('E' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('F' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
-    $spreadsheet
-        ->getActiveSheet()
-        ->getStyle('G' . $row)
-        ->applyFromArray([
-            'alignment' => [
-                'horizontal' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                'vertical' =>
-                    \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrap' => true,
-            ],
-        ]);
+    $spreadsheet->getActiveSheet()->getStyle('A'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('B'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('C'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('D'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('E'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('F'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('G'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
 
     $row++;
 }
 
-header(
-    'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-);
-header(
-    'Content-Disposition: attachment;filename="Analisis_de_Vencimiento_del' .
-        $fechai .
-        ' hasta ' .
-        $fechaf .
-        '.xlsx"'
-);
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="Analisis_de_Vencimiento_del'.$fechai.' hasta '.$fechaf.'.xlsx"');
 header('Cache-Control: max-age=0');
+
 
 $writer = new Xlsx($spreadsheet);
 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');

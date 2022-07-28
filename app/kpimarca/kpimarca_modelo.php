@@ -7,7 +7,7 @@ class KpiMarcaModel extends Conectar{
     public function registrar_kpiMarcas($marca)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -23,7 +23,7 @@ class KpiMarcaModel extends Conectar{
     public function eliminar_kpiMarcas()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 

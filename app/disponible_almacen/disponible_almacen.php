@@ -1,24 +1,22 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
-require_once '../../config/conexion.php';
+require_once("../../config/conexion.php");
 
 if (!isset($_SESSION['cedula'])) {
-    session_destroy();
-    Url::redirect(URL_APP);
+    session_destroy(); Url::redirect(URL_APP);
 }
 ?>
 <!DOCTYPE html>
 <html>
-<?php require_once '../header.php'; ?>
+<?php require_once("../header.php");?>
 <body class="hold-transition sidebar-mini layout-fixed">
-	<?php
- require_once '../menu_lateral.php';
- if (!PermisosHelpers::verficarAcceso(Functions::getNameDirectory())) {
-     include '../errorNoTienePermisos.php';
- } else {
-      ?>
+	<?php require_once("../menu_lateral.php");
+    if (!PermisosHelpers::verficarAcceso( Functions::getNameDirectory() )) {
+        include ('../errorNoTienePermisos.php');
+    }
+    else { ?>
 	    <!-- BOX COMPLETO DE LA VISTA -->
 	    <div class="content-wrapper">
 		<!-- BOX DE LA MIGA DE PAN -->
@@ -48,6 +46,7 @@ if (!isset($_SESSION['cedula'])) {
 						<button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove"><i class="fas fa-times"></i></button>
 					</div>
 				</div>
+<?php if ($_SESSION['rol'] != '5') { ?>
 				<!-- BOX CARD QUE CONTIENE EL FORMULARIO QUE SE CIERRA -->
 				<div  class="card-body" id="minimizar">
 					<form class="form-horizontal" >
@@ -63,11 +62,30 @@ if (!isset($_SESSION['cedula'])) {
 							</div>
 						</form>
 					</div>
+<?php }else{ ?>
+
+	<!-- BOX CARD QUE CONTIENE EL FORMULARIO QUE SE CIERRA -->
+				<div  class="card-body" id="minimizar">
+					<form class="form-horizontal" >
+						<div class="form-group row">
+							<div class="col-sm-12">
+                                    <div class="form-check form-check-inline">
+                                	<label for="marcasd">Mascas</label>
+									<select class="form-control custom-select" name="marcasd" id="marcasd" style="width: 100%;" required>
+                                    <option name="" value="">Seleccione</option>
+									<option name="" value="PARMALAT">PARMALAT</option>
+                                    </select>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+<?php } ?>
 					<!-- BOX BOTON DE PROCESO -->
 					<div class="card-footer">
-						<button type="submit" class="btn btn-success" id="btn_consultar" name="btn_consultar"><i class="fa fa-search" aria-hidden="true"></i><?= Strings::titleFromJson(
-          'boton_consultar'
-      ) ?></button>
+						<button type="submit" class="btn btn-success" id="btn_consultar" name="btn_consultar"><i class="fa fa-search" aria-hidden="true"></i><?=Strings::titleFromJson('boton_consultar')?></button>
 					</div>
 				</div>
 
@@ -81,38 +99,28 @@ if (!isset($_SESSION['cedula'])) {
 							<thead style="background-color: #17A2B8;color: white;">
 								<tr>
 								
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'codigo_prod'
-         ) ?>"><?= Strings::titleFromJson('codigo_prod') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'descrip_prod'
-         ) ?>"><?= Strings::titleFromJson('descrip_prod') ?></th>	
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'marca_prod'
-         ) ?>"><?= Strings::titleFromJson('marca_prod') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'bulto_01'
-         ) ?>"><?= Strings::titleFromJson('bulto_01') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'paquete_01'
-         ) ?>"><?= Strings::titleFromJson('paquete_01') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'bulto_07'
-         ) ?>"><?= Strings::titleFromJson('bulto_07') ?></th>
-									<th class="text-center" title="<?= Strings::DescriptionFromJson(
-             'paquete_07'
-         ) ?>"><?= Strings::titleFromJson('paquete_07') ?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('codigo_prod')?>"><?=Strings::titleFromJson('codigo_prod')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('descrip_prod')?>"><?=Strings::titleFromJson('descrip_prod')?></th>	
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('marca_prod')?>"><?=Strings::titleFromJson('marca_prod')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('bulto_01')?>"><?=Strings::titleFromJson('bulto_01')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('paquete_01')?>"><?=Strings::titleFromJson('paquete_01')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('bulto_03')?>"><?=Strings::titleFromJson('bulto_03')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('paquete_03')?>"><?=Strings::titleFromJson('paquete_03')?></th>
+									<th class="text-center" title="<?=Strings::DescriptionFromJson('bulto_13')?>"><?=Strings::titleFromJson('bulto_13')?></th>
+                                    <th class="text-center" title="<?=Strings::DescriptionFromJson('paquete_13')?>"><?=Strings::titleFromJson('paquete_13')?></th>
 								</tr>
 							</thead>
 							<tfoot style="background-color: #ccc;color: white;">
 								<tr>
-									<th class="text-center"><?= Strings::titleFromJson('codigo_prod') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('descrip_prod') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('marca_prod') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('bulto_01') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('paquete_01') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('bulto_07') ?></th>
-									<th class="text-center"><?= Strings::titleFromJson('paquete_07') ?></th>
+									<th class="text-center"><?=Strings::titleFromJson('codigo_prod')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('descrip_prod')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('marca_prod')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('bulto_01')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('paquete_01')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('bulto_03')?></th>
+									<th class="text-center"><?=Strings::titleFromJson('paquete_03')?></th>
+                                    <th class="text-center"><?=Strings::titleFromJson('bulto_13')?></th>
+                                    <th class="text-center"><?=Strings::titleFromJson('paquete_13')?></th>
 								</tr>
 							</tfoot>
 							<tbody>
@@ -126,22 +134,18 @@ if (!isset($_SESSION['cedula'])) {
 						</div>
 						<!-- BOX BOTONES DE REPORTES-->
 						<div align="center">
-							<button type="button" class="btn btn-info" id="btn_excel"><?= Strings::titleFromJson(
-           'boton_excel'
-       ) ?></button>
-						<!--	<button type="button" class="btn btn-info" id="btn_pdf"><?= Strings::titleFromJson(
-          'boton_pdf2'
-      ) ?></button>-->
+							<button type="button" class="btn btn-info" id="btn_excel"><?=Strings::titleFromJson('boton_excel')?></button>
+						<!--	<button type="button" class="btn btn-info" id="btn_pdf"><?=Strings::titleFromJson('boton_pdf2')?></button>-->
 						</div>
 					</div>
 				</section>
 			</div>
-        <?php require_once '../footer.php'; ?>
+        <?php require_once("../footer.php");?>
 		<!-- InputMask -->
         <script src="<?php echo URL_LIBRARY; ?>plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <script type="text/javascript" src="disponiblealmacen.js"></script>
         <?php
- }
- ?>
+    }
+    ?>
 </body>
 </html>

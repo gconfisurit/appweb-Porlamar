@@ -8,7 +8,7 @@ class NotaDeEntrega extends Conectar {
     public function get_datos_cliente($codclie)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -24,7 +24,7 @@ class NotaDeEntrega extends Conectar {
     public function get_descuento($numerod, $tipo)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 

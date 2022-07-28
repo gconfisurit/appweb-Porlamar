@@ -5,7 +5,7 @@ class VentasKg extends Conectar {
     public static function getNumerodOfDiscounts($datei, $datef, $codinst)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT DISTINCT numerod
                 FROM saitemfac

@@ -39,6 +39,13 @@ switch ($_GET["op"]) {
         $sub_array[] = $row["cliente"];
         $sub_array[] = $row["chofer"];
         $sub_array[] = $total;
+        $sub_array[] = $row["motivo"];
+ $sub_array[] ='<div class="col text-center">
+                                <button type="button" data-toggle="modal" onclick="obtener_datos(\'' . $row["numerod"] . '\',\'' . $row["tipofac"] . '\');" data-target="#editarMotivo" class="btn btn-info btn-sm update">Editar Motivo</button>
+                            </div>';
+      
+       
+        
         $suma_monto += $row["Monto"];
 
         $data[] = $sub_array;
@@ -62,6 +69,38 @@ switch ($_GET["op"]) {
 
         echo json_encode($output);
         break;
+
+
+
+    case "editarMotivo":
+
+       /* echo "<script>console.log('motivo: " . $_POST["motivo"] . "' );</script>";
+        echo "<script>console.log('ndevolucion: " . $_POST["ndevolucion"] . "' );</script>";*/
+        $datos = false;
+        $motivo= '';
+        $ndevolucion='';
+        $motivo= $_POST["motivo"];
+        $ndevolucion=$_POST["ndevolucion"];
+        $tipo=$_POST["tipo"];
+
+
+        $datos = $devoluciones->editarMotivo(  $motivo,$ndevolucion,$tipo);
+
+        if($datos){
+            $output = [
+                "mensaje" => "Editado con Exito!",
+                "icono"   => "success"
+            ];
+        } else {
+            $output = [
+                "mensaje" => "Ocurrió un error al Editar!",
+                "icono"   => "error"
+            ];
+        }
+
+        echo json_encode($output);
+        break;
+
 
     
 }

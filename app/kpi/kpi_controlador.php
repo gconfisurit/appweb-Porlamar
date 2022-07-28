@@ -110,7 +110,13 @@ switch ($_GET["op"]) {
                         $clientes_noactivos = $clientes - $clientes_activos;
                         $activacionBultos   = KpiHelpers::activacionBultosPorMarcasKpi($ruta, $marcasKpi, $fechai2, $fechaf2);
                         $porc_activacion    = ($clientes!=0) ? ($clientes_activos/$clientes) * 100 : 0;
-                        $frecuencia         = $kpi->get_frecuenciaVisita($ruta)[0];
+                        $frecuenciadata         = $kpi->get_frecuenciaVisita($ruta);
+                        foreach ($frecuenciadata as $row){
+
+
+                           $frecuencia = $row["Frecuencia"];
+                        }
+
                         $frecuenciaVisita   = KpiHelpers::frecuenciaVisita($frecuencia);
                         $obj_documentos_mensual = KpiHelpers::objetivoFacturasMasNotasMensual($clientes, $d_habiles, $frecuencia);
                         $facturas_realizadas    = count($kpi->get_ventasFactura($ruta, $fechai2, $fechaf2));
@@ -122,7 +128,12 @@ switch ($_GET["op"]) {
                         $montoendivisa_devoluciones_nt   = floatval($kpi->get_montoDivisasDevolucionesNotas($ruta, $fechai2, $fechaf2)[0]["MontoD"]);
                         $montoendivisa_devoluciones = $montoendivisa_devoluciones_fact + $montoendivisa_devoluciones_nt;
                         $efec_alcanzada_fecha = KpiHelpers::efectividadAlcanzadaAlaFecha($d_trans, $d_habiles, $obj_documentos_mensual, $facturas_realizadas, $notas_realizadas);
-                        $objetivo_bulto       = KpiHelpers::obtenerObjetivo($frecuencia, 'ObjVentasBu');
+                        $objetivo_bultoda       = $kpi->obtenerObjetivo($ruta);
+                        foreach ($objetivo_bultoda as $row2){
+
+
+                           $objetivo_bulto = $row2["ObjVentasBu"];
+                        }
                         $logro_bulto          = KpiHelpers::logroPorTipo($ruta, $fechai2, $fechaf2, 'BUL');
                         $porc_alcanzado_bulto = (($objetivo_bulto!=0) ? ($logro_bulto/$objetivo_bulto)*100 : 0) ?? 0;
                         $objetivo_kg          = KpiHelpers::obtenerObjetivo($frecuencia, 'ObjVentasKG');

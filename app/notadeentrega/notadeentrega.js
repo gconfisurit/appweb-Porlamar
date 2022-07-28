@@ -24,7 +24,7 @@ $(document).ready(function(){
 //ACCION AL PRECIONAR EL BOTON.
 $(document).on("click", "#btn_consultar", function () {
 
-    const documento = $("#nrodocumento").val();
+    const documento = ($("#nrodocumento").val());
 
     if (estado_minimizado) {
         $("#tabla").hide();

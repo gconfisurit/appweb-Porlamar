@@ -128,22 +128,22 @@ foreach(range('A','Y') as $columnID) {
 $row = 8;
 $i = 0;
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('#'));
-$sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codvend'));
+$sheet->setCellValue(getExcelCol($i).$row, "Código EDV");
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('descrip_vend'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('clase'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('tipo_transaccion'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('numero_operacion'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codclie'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('razon_social'));
-$sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codnestle'));
+$sheet->setCellValue(getExcelCol($i).$row, "Tipo de Cliente");
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('clasificacion'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codigo_prod'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('descrip_prod'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('marca_prod'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('cantidad'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('unidad'));
-$sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('bultos'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('paquetes'));
+$sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('bultos'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('peso'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('instancia'));
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('monto_dolars'));
@@ -225,14 +225,14 @@ if (is_array($datos)==true and count($datos)>0)
         $sub_array['marca']         = $row["marca"];
         $sub_array['cantidad']      = $row["cantidad"] * $multiplicador;
         $sub_array['unid']          = $row["unid"];
-        $sub_array['paq']           = Strings::rdecimal($row["paq"] * $multiplicador, 1);
-        $sub_array['bul']           = Strings::rdecimal($row["bul"] * $multiplicador, 1);
-        $sub_array['kg']            = Strings::rdecimal($row["kg"] * $multiplicador, 1);
+        $sub_array['paq']           = number_format($row["paq"] * $multiplicador, 1);
+        $sub_array['bul']           = number_format($row["bul"] * $multiplicador, 1);
+        $sub_array['kg']            = number_format($row["kg"] * $multiplicador, 1);
         $sub_array['instancia']     = $row["instancia"];
-        $sub_array['montod']        =  Strings::rdecimal($montod  * $multiplicador, 2);
-        $sub_array['descuento']     =  Strings::rdecimal($descuento  * $multiplicador, 2);
-        $sub_array['factor']        =  Strings::rdecimal($row['factor'], 2);
-        $sub_array['montobs']       =  Strings::rdecimal($montobs * $multiplicador, 2);
+        $sub_array['montod']        =  ($montod  * $multiplicador);
+        $sub_array['descuento']     =  ($descuento  * $multiplicador);
+        $sub_array['factor']        =  ($row['factor']);
+        $sub_array['montobs']       =  ($montobs * $multiplicador);
         $sub_array['fechae']        = date(FORMAT_DATE, strtotime($row["fechae"]));
         $sub_array['mes']           =  utf8_encode($row['MES']);
 
@@ -250,10 +250,10 @@ $total = (hash_equals('n', $_GET['t']))
     : $total;
 
 $totales_tabladinamica = array(
-    "paqt"  => Strings::rdecimal($paqt, 2),
-    "bult"  => Strings::rdecimal($bult, 2),
-    "kilo"  => Strings::rdecimal($kilo, 2),
-    "total" => Strings::rdecimal($total, 2),
+    "paqt"  =>($paqt),
+    "bult"  => ($bult),
+    "kilo"  => ($kilo),
+    "total" => ($total),
 );
 
 switch ($_GET['t']) {
@@ -294,9 +294,9 @@ if (is_array($resumen)==true and count($resumen)>0)
         $sub_array['codvend']          = $row["codvend"];
         $sub_array['codclie']          = $row["codclie"];
         $sub_array['descrip']          = $row["descrip"];
-        $sub_array['descuentototal']   = Strings::rdecimal($descuentototal, 2);
-        $sub_array['tasa']             = Strings::rdecimal($row["tasa"], 2);
-        $sub_array['descuentototalbs'] = Strings::rdecimal($descuentototalbs, 2);
+        $sub_array['descuentototal']   =($descuentototal);
+        $sub_array['tasa']             = ($row["tasa"]);
+        $sub_array['descuentototalbs'] = ($descuentototalbs);
         $sub_array['numerod']          = utf8_decode($row["numerod"]);
         $sub_array['tipofac']          = $row["tipofac"];
         $sub_array['fechae']           = date(FORMAT_DATE, strtotime($row["fechae"]));

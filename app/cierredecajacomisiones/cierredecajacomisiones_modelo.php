@@ -1,19 +1,20 @@
 <?php
-//LLAMAMOS A LA CONEXION.
-require_once '../../config/conexion.php';
+ //LLAMAMOS A LA CONEXION.
+require_once("../../config/conexion.php");
 
-class cierredecajacomisiones extends Conectar
-{
-    public function getcomision($fechai, $fechaf, $ruta, $tipo)
-    {
+class cierredecajacomisiones extends Conectar{
+
+
+	public function getcomision($fechai, $fechaf, $ruta, $tipo){
+
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
-        $conectar = parent::conexion2();
-        parent::set_names();
+        //CUANDO ES appweb-Porlamar ES CONEXION.
+       $conectar= parent::conexion2();
+       parent::set_names();
 
         //QUERY
-        if ($tipo === 'B' and $ruta === 'Todos') {
-            $sql = "SELECT 
+            if($tipo === 'B' and $ruta === 'Todos'){
+              $sql = "SELECT 
               c.CodVend EDV, 
               p.NroUnico,
               case 
@@ -33,11 +34,12 @@ class cierredecajacomisiones extends Conectar
               inner join SAACXC as c on p.NroPpal = c.NroUnico 
               inner join SACLIE as cl on c.CodClie = cl.CodClie
               left join SAACXC as cxc on cxc.NumeroD = p.NumeroD and cxc.TipoCxc in ('10','20')
-              where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf'and p.TipoCxc not in ('31','41')
+              where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf'and p.TipoCxc in ('10','20') and c.TipoCxc in ('41')
               order by p.FechaE DESC";
-        } else {
-            if ($tipo === 'D' and $ruta === 'Todos') {
-                $sql = "SELECT 
+            }else{
+
+                if($tipo === 'D' and $ruta === 'Todos'){
+                    $sql = "SELECT 
                     c.CodVend EDV, 
                     p.NroUnico,
                     case 
@@ -57,11 +59,12 @@ class cierredecajacomisiones extends Conectar
                     inner join [MCONFISUR_D].[dbo].SAACXC as c on p.NroPpal = c.NroUnico 
                     inner join [MCONFISUR_D].[dbo].SACLIE as cl on c.CodClie = cl.CodClie
                     left join [MCONFISUR_D].[dbo].SAACXC as cxc on cxc.NumeroD = p.NumeroD and cxc.TipoCxc in ('10','20')
-                    where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and p.TipoCxc not in ('31','41')
+                    where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and p.TipoCxc in ('10','20') and c.TipoCxc in ('41')
                     order by p.FechaE DESC";
-            } else {
-                if ($tipo === 'B' and $ruta != 'Todos') {
-                    $sql = "SELECT 
+                }else{
+
+                    if($tipo === 'B' and $ruta != 'Todos'){
+                        $sql = "SELECT 
                         c.CodVend EDV, 
                         p.NroUnico,
                         case 
@@ -81,11 +84,12 @@ class cierredecajacomisiones extends Conectar
                         inner join SAACXC as c on p.NroPpal = c.NroUnico 
                         inner join SACLIE as cl on c.CodClie = cl.CodClie
                         left join SAACXC as cxc on cxc.NumeroD = p.NumeroD and cxc.TipoCxc in ('10','20')
-                        where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and  c.CodVend = '$ruta' and p.TipoCxc not in ('31','41')
+                        where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and  c.CodVend = '$ruta' and p.TipoCxc in ('10','20') and c.TipoCxc in ('41')
                         order by p.FechaE DESC";
-                } else {
-                    if ($tipo === 'D' and $ruta != 'Todos') {
-                        $sql = "SELECT 
+                    }else{
+
+                        if($tipo === 'D' and $ruta != 'Todos'){
+                            $sql = "SELECT 
                             c.CodVend EDV, 
                             p.NroUnico,
                             case 
@@ -105,18 +109,22 @@ class cierredecajacomisiones extends Conectar
                             inner join [MCONFISUR_D].[dbo].SAACXC as c on p.NroPpal = c.NroUnico 
                             inner join [MCONFISUR_D].[dbo].SACLIE as cl on c.CodClie = cl.CodClie
                             left join [MCONFISUR_D].[dbo].SAACXC as cxc on cxc.NumeroD = p.NumeroD and cxc.TipoCxc in ('10','20')
-                            where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and  c.CodVend = '$ruta' and p.TipoCxc not in ('31','41')
+                            where DATEADD(dd, 0, DATEDIFF(dd, 0, p.FechaE)) between '$fechai' and '$fechaf' and  c.CodVend = '$ruta' and p.TipoCxc in ('10','20') and c.TipoCxc in ('41')
                             order by p.FechaE DESC";
+                        }
                     }
+
                 }
+              
             }
-        }
 
         //PREPARACION DE LA CONSULTA PARA EJECUTARLA.
-        $sql = $conectar->prepare($sql);
-        $sql->execute();
-        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+       $sql = $conectar->prepare($sql);
+       $sql->execute();
+       $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+      
+       return $result ;
+   }
 
-        return $result;
-    }
+
 }

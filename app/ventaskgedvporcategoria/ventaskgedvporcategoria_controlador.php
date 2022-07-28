@@ -15,6 +15,8 @@ switch ($_GET["op"]) {
 
     case "listar":
 
+        //echo "<script>console.log('Console: " . $_POST['instancia'] . "' );</script>";
+
         $datos = array(
             'fechai'    => $_POST['fechai'],
             'fechaf'    => $_POST['fechaf'],

@@ -7,7 +7,7 @@ class NotaDeEntregaPorRango extends Conectar {
 
     public function get_lista_numerod_del_rango($numerod_i, $numerod_f) {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 

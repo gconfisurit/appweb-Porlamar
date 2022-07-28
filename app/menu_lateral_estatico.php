@@ -13,8 +13,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- LOGO SUPERIOR MENU -->
     <a href="<?php echo URL_APP; ?>principal.php" class="brand-link">
-        <img src="<?php echo URL_LIBRARY; ?>dist/img/AdminLTELogo.png " alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Logística y Despacho</span>
+        <img src="<?php echo URL_LIBRARY; ?>dist/img/logo_aj.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <!--<span class="brand-text font-weight-light">Logística y Despacho</span>-->
     </a>
     <!-- PERFIL DE USUARIO -->
     <div class="sidebar">

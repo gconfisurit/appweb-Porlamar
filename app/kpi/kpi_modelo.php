@@ -8,14 +8,11 @@ class Kpi extends Conectar
     public function get_coordinadores()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
-        $sql = "SELECT DISTINCT coordinador
-                FROM savend_02 d INNER JOIN savend S ON S.codvend = d.CodVend
-                WHERE (d.coordinador = '' OR d.coordinador IS NOT NULL) AND d.coordinador != ' ' AND S.Activo = 1 AND s.codvend != '00' AND s.codvend != '16'
-                ORDER BY coordinador ASC";
+        $sql = "SELECT distinct coordinador from SAVEND_01 d inner join savend S on S.codvend= d.CodVend where (d.coordinador = '' or d.coordinador is not null) and d.coordinador != ' ' and S.Activo = 1 and s.codvend != '00' and s.codvend != '16'  order by coordinador Asc";
         $sql = $conectar->prepare($sql);
         $sql->execute();
 
@@ -25,12 +22,12 @@ class Kpi extends Conectar
     public function get_rutasPorCoordinador($nombre)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
-        $sql = "SELECT * FROM savend INNER JOIN savend_02 ON savend.codvend = savend_02.codvend
-                WHERE activo = '1' AND coordinador != '' AND savend_02.coordinador = ?
+        $sql = "SELECT * FROM savend INNER JOIN SAVEND_01 ON savend.codvend = SAVEND_01.codvend
+                WHERE activo = '1' AND coordinador != '' AND SAVEND_01.coordinador = ?
                 ORDER BY savend.codvend";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $nombre);
@@ -42,11 +39,12 @@ class Kpi extends Conectar
     public function get_MaestroClientesPorRuta($ruta)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
-        $sql = "SELECT descrip, codclie, direc1 AS direc, (SELECT DiasVisita FROM SACLIE_01 WHERE SACLIE_01.CodClie=SACLIE.CodClie) as dia_visita FROM saclie WHERE codvend = ? AND activo = '1'";
+        $sql = "SELECT (saclie.CodClie) AS codclie, Descrip as descrip, Direc2 AS direc, (SELECT DiasVisita FROM SACLIE_01 WHERE SACLIE_01.CodClie=saclie.CodClie) as dia_visita FROM saclie INNER JOIN saclie_01 ON saclie.codclie = saclie_01.codclie
+                WHERE activo = '1' AND (saclie.CodVend = '$ruta' or Ruta_Alternativa = '$ruta' OR Ruta_Alternativa_2 = '$ruta')";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $ruta);
         $sql->execute();
@@ -58,17 +56,17 @@ class Kpi extends Conectar
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
         $sql = "SELECT distinct(SAFACT.CodClie) AS codclie, Descrip as descrip, Direc2 AS direc, (SELECT DiasVisita FROM SACLIE_01 WHERE SACLIE_01.CodClie=SAFACT.CodClie) as dia_visita FROM SAFACT WHERE SAFACT.CodVend = ? AND TipoFac in ('A') AND SAFACT.CodClie IN (SELECT SACLIE.CodClie FROM SACLIE INNER JOIN SACLIE_01 ON SACLIE.CodClie = SACLIE_01.CodClie
-                WHERE ACTIVO = 1 AND (SACLIE.CodVend = ? or Ruta_Alternativa = ? OR Ruta_Alternativa_2 = ?)) AND DATEADD(dd, 0, DATEDIFF(dd, 0, SAFACT.FechaE)) between ? and ? AND NumeroD NOT IN (SELECT X.NumeroD FROM SAFACT AS X WHERE X.TipoFac in ('A') AND x.NumeroR is not NULL AND cast(X.Monto as BIGINT) = cast((select Z.Monto from SAFACT AS Z where Z.NumeroD = x.NumeroR and Z.TipoFac in ('B'))as BIGINT))
+                WHERE activo = '1' AND (SACLIE.CodVend = ? or Ruta_Alternativa = ? OR Ruta_Alternativa_2 = ?)) AND DATEADD(dd, 0, DATEDIFF(dd, 0, SAFACT.FechaE)) between ? and ? AND NumeroD NOT IN (SELECT X.NumeroD FROM SAFACT AS X WHERE X.TipoFac in ('A') AND x.NumeroR is not NULL AND cast(X.Monto as BIGINT) = cast((select Z.Monto from SAFACT AS Z where Z.NumeroD = x.NumeroR and Z.TipoFac in ('B'))as BIGINT))
                 
                 UNION
                 
                 SELECT distinct(SANOTA.CodClie) AS codclie, rsocial AS descip, direccion AS direc, (SELECT DiasVisita FROM SACLIE_01 WHERE SACLIE_01.CodClie=SANOTA.CodClie) as dia_visita FROM SANOTA WHERE SANOTA.CodVend = ? AND TipoFac in ('C') AND SANOTA.numerof = '0' AND SANOTA.CodClie IN (SELECT SACLIE.CodClie FROM SACLIE INNER JOIN SACLIE_01 ON SACLIE.CodClie = SACLIE_01.CodClie
-                WHERE ACTIVO = 1 AND (SACLIE.CodVend = ? or Ruta_Alternativa = ? OR Ruta_Alternativa_2 = ?)) AND DATEADD(dd, 0, DATEDIFF(dd, 0, SANOTA.FechaE)) between ? and ? AND NumeroD NOT IN (SELECT X.NumeroD FROM SANOTA AS X WHERE X.TipoFac in ('C') AND x.numerof is not NULL AND cast(X.subtotal as BIGINT) = cast((select Z.subtotal from SANOTA AS Z where Z.NumeroD = x.numerof and Z.TipoFac in ('D'))as BIGINT))";
+                WHERE activo = '1' AND (SACLIE.CodVend = ? or Ruta_Alternativa = ? OR Ruta_Alternativa_2 = ?)) AND DATEADD(dd, 0, DATEDIFF(dd, 0, SANOTA.FechaE)) between ? and ? AND NumeroD NOT IN (SELECT X.NumeroD FROM SANOTA AS X WHERE X.TipoFac in ('C') AND x.numerof is not NULL AND cast(X.subtotal as BIGINT) = cast((select Z.subtotal from SANOTA AS Z where Z.NumeroD = x.numerof and Z.TipoFac in ('D'))as BIGINT))";
         $sql = $conectar->prepare($sql);
         $sql->bindValue($i+=1, $ruta);
         $sql->bindValue($i+=1, $ruta);
@@ -92,7 +90,7 @@ class Kpi extends Conectar
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -131,11 +129,11 @@ class Kpi extends Conectar
     public function get_frecuenciaVisita($ruta)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
-        $sql = "SELECT * FROM savend_02 WHERE CodVend = ?";
+        $sql = "SELECT * FROM SAVEND_01 WHERE CodVend = ?";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $ruta);
         $sql->execute();
@@ -147,7 +145,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -167,7 +165,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -187,7 +185,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -205,7 +203,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -219,11 +217,27 @@ class Kpi extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
+    public function obtenerObjetivo($ruta)
+    {
+        $i=0;
+        //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
+        //CUANDO ES appweb-Porlamar ES CONEXION.
+        $conectar = parent::conexion2();
+        parent::set_names();
+
+        $sql = "SELECT ObjVentasBu FROM SAVEND_01 where CodVend ='$ruta'";
+        $sql = $conectar->prepare($sql);
+
+        $sql->execute();
+
+        return $resultado = $sql->fetchAll();
+    }
+
     public function get_montoDivisasDevolucionesFactura($ruta, $fechai, $fechaf)
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -242,7 +256,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -261,7 +275,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -280,7 +294,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -299,7 +313,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -322,7 +336,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -345,7 +359,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -368,7 +382,7 @@ class Kpi extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 

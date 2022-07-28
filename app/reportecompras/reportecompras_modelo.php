@@ -9,7 +9,7 @@ class ReporteCompras extends Conectar
     public function get_codprod_por_marca($almcen_principal, $marca) {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -35,7 +35,7 @@ class ReporteCompras extends Conectar
     public function get_datos_producto($codprod)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -52,7 +52,7 @@ class ReporteCompras extends Conectar
     public function get_costos($codprod)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -72,7 +72,7 @@ class ReporteCompras extends Conectar
     public function get_ultimas_compras($codprod)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -93,7 +93,7 @@ class ReporteCompras extends Conectar
     public function get_ventas_mes_anterior($codprod, $fechai, $fechaf) {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -123,7 +123,7 @@ class ReporteCompras extends Conectar
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -141,7 +141,7 @@ class ReporteCompras extends Conectar
     public function get_productos_no_vendidos($codprod, $fechai, $fechaf) {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 

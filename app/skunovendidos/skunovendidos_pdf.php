@@ -46,7 +46,7 @@ class PDF extends FPDF
         $this->SetFillColor(200, 220, 255);
         // titulo de columnas
         $this->Cell(addWidthInArray(20), 6, utf8_decode(Strings::titleFromJson('numerod')), 1, 0, 'C', true);
-        $this->Cell(addWidthInArray(20), 6, utf8_decode(Strings::titleFromJson('codvend')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(20), 6, utf8_decode("Código EDV"), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(20), 6, utf8_decode(Strings::titleFromJson('descrip_vend')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(23), 6, utf8_decode(Strings::titleFromJson('codclie')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(38), 6, utf8_decode(Strings::titleFromJson('razon_social')), 1, 0, 'C', true);

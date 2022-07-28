@@ -6,7 +6,7 @@ class Permisos extends Conectar
     public static function getRolesGrupoPorRolID($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, id_modulo, id_roles FROM Roles_Grupo WHERE id_roles=?";
 
@@ -19,7 +19,7 @@ class Permisos extends Conectar
     public static function getPermisosPorUsuarioID($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, id_usuarios, id_modulo FROM Permisos WHERE id_usuarios=?";
 
@@ -33,7 +33,7 @@ class Permisos extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT p.id, id_usuarios, id_modulo, m.ruta
                 FROM Permisos p
@@ -51,7 +51,7 @@ class Permisos extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "INSERT INTO Permisos (id_usuarios, id_modulo) VALUES (?,?)";
 
@@ -66,7 +66,7 @@ class Permisos extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "INSERT INTO Roles_Grupo(ID_Modulo, ID_Roles) VALUES(?,?)";
 
@@ -81,7 +81,7 @@ class Permisos extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "DELETE FROM Permisos WHERE id_usuarios=? AND id_modulo=?";
 
@@ -95,7 +95,7 @@ class Permisos extends Conectar
     public static function borrar_permiso_user($user_id)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "DELETE FROM Permisos WHERE id_usuarios=?";
 
@@ -109,7 +109,7 @@ class Permisos extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "DELETE FROM Roles_Grupo WHERE ID_Modulo=? AND ID_Roles=?";
 

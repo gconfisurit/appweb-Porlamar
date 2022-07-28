@@ -6,7 +6,7 @@ class Modulos extends Conectar
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, nombre, icono, ruta, menu_id, estatus FROM Modulos";
 
@@ -18,7 +18,7 @@ class Modulos extends Conectar
     public static function todosActivos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, nombre, icono, ruta, menu_id, estatus FROM Modulos WHERE estatus = 1";
 
@@ -30,7 +30,7 @@ class Modulos extends Conectar
     public static function getById($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, nombre, icono, ruta, menu_id, estatus FROM Modulos WHERE id=?";
 
@@ -43,7 +43,7 @@ class Modulos extends Conectar
     public static function getByName($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, nombre, icono, ruta, menu_id, estatus FROM Modulos WHERE nombre=?";
 
@@ -56,7 +56,7 @@ class Modulos extends Conectar
     public static function getByRoute($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT id, nombre, icono, ruta, menu_id, estatus FROM Modulos WHERE ruta=?";
 
@@ -69,7 +69,7 @@ class Modulos extends Conectar
     public static function getByMenuId($key, $includeNoActive = false)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $condition = $includeNoActive ? ' AND estatus=1' : '';
 

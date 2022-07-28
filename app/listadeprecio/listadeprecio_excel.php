@@ -152,7 +152,7 @@ $num = count($datos);
 $row = 8;
 foreach ($datos as $x) {
     $i = 0;
-    if ($x['esexento']) {
+    if (!$x['esexento']) {
         $precio1 = $x['precio1'] * $iva;
         $precio2 = $x['precio2'] * $iva;
         $precio3 = $x['precio3'] * $iva;

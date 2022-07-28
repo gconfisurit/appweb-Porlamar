@@ -36,7 +36,7 @@ function datadetalles() {
                     url: "facturasporcobrar_controlador.php?op=detalle_de_facturas",
                     type: "post",
                     dataType: "json",
-                    data: {fechai: fechai, fechaf: fechaf , dataop:dataop},
+                    data: {fechai:fechai, fechaf:fechaf , dataop:dataop},
                     beforeSend: function () {
                         SweetAlertLoadingShow();
                     },
@@ -83,7 +83,8 @@ function datadetalles() {
                         });
     
                         $('#total_registros').html(
-                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototal + '  Bs</code>   '
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total Bs:   <code>' + data.Mtototal + '  Bs</code>   '+
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total $:   <code>' + data.Mtototaldolar + '  $</code>   ' 
                         )
     
                         validarCantidadRegistrosTabla();

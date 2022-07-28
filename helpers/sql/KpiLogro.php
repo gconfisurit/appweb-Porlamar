@@ -7,7 +7,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT SUM(CASE saitemfac.Esunid WHEN 1 THEN (cantidad/cantempaq)*saprod.tara ELSE cantidad*saprod.tara END) AS kg
 			 FROM saitemfac INNER JOIN saprod ON saitemfac.coditem = saprod.codprod WHERE 
@@ -26,7 +26,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT SUM(CASE saitemnota.esunidad WHEN 1 THEN (cantidad/cantempaq)*saprod.tara ELSE cantidad*saprod.tara END) AS kg
 			 FROM saitemnota INNER JOIN saprod ON saitemnota.coditem = saprod.codprod WHERE 
@@ -45,7 +45,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT SUM((CASE saitemfac.Esunid WHEN 1 THEN cantidad ELSE cantidad*cantempaq END)) AS paq
 			 FROM saitemfac INNER JOIN saprod ON saitemfac.coditem = saprod.codprod WHERE 
@@ -64,7 +64,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT SUM((CASE saitemnota.esunidad WHEN 1 THEN cantidad ELSE cantidad*cantempaq END)) AS paq
                 FROM saitemnota INNER JOIN saprod ON saitemnota.coditem = saprod.codprod WHERE 
@@ -83,7 +83,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT sum((CASE saitemfac.Esunid WHEN 1 THEN cantidad/cantempaq ELSE cantidad END)) AS bul
 			 FROM saitemfac INNER JOIN saprod ON saitemfac.coditem = saprod.codprod WHERE 
@@ -102,7 +102,7 @@ class KpiLogro extends Conectar {
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT sum((CASE saitemnota.esunidad WHEN 1 THEN cantidad/cantempaq ELSE cantidad END)) AS bul
 			 FROM saitemnota INNER JOIN saprod ON saitemnota.coditem = saprod.codprod WHERE 

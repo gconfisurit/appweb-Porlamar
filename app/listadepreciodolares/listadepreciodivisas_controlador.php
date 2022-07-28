@@ -37,35 +37,35 @@ switch ($_GET["op"]) {
         $thead[] = Strings::titleFromJson('bultos');
         switch ($sumap) {
             case 1:
-                $thead[] = "Precio $sumap2 Bulto";
+                $thead[] = "Precio $sumap2 Bulto $";
                 break;
             case 2:
                 $aux1 = ($p1 == 1) ? $p1 : $p2;
                 $aux2 = ($p3 == 3) ? $p3 : $p2;
-                $thead[] = "Precio $aux1 Bulto";
-                $thead[] = "Precio $aux2 Bulto";
+                $thead[] = "Precio $aux1 Bulto $";
+                $thead[] = "Precio $aux2 Bulto $";
                 break;
             default: /** 0 || 3**/
-                $thead[] = Strings::titleFromJson('precio1_bulto');
-                $thead[] = Strings::titleFromJson('precio2_bulto');
-                $thead[] = Strings::titleFromJson('precio3_bulto');
+                $thead[] = Strings::titleFromJson('precio1d_bulto');
+                $thead[] = Strings::titleFromJson('precio2d_bulto');
+                $thead[] = Strings::titleFromJson('precio3d_bulto');
         }
         //<!--PAQUETES-->
         $thead[] = Strings::titleFromJson('paquetes');
         switch ($sumap) {
             case 1:
-                $thead[] = "Precio $sumap2 Paquete";
+                $thead[] = "Precio $sumap2 Paquete $";
                 break;
             case 2:
                 $aux1 = ($p1 == 1) ? $p1 : $p2;
                 $aux2 = ($p3 == 3) ? $p3 : $p2;
-                $thead[] = "Precio $aux1 Paquete";
-                $thead[] = "Precio $aux2 Paquete";
+                $thead[] = "Precio $aux1 Paquete $";
+                $thead[] = "Precio $aux2 Paquete $";
                 break;
             default: /** 0 || 3**/
-                $thead[] = Strings::titleFromJson('precio1_paquete');
-                $thead[] = Strings::titleFromJson('precio2_paquete');
-                $thead[] = Strings::titleFromJson('precio3_paquete');
+                $thead[] = Strings::titleFromJson('precio1d_paquete');
+                $thead[] = Strings::titleFromJson('precio2d_paquete');
+                $thead[] = Strings::titleFromJson('precio3d_paquete');
         }
         if ($cubi == 1) {
             $thead[] = Strings::titleFromJson('cubicaje');
@@ -112,21 +112,21 @@ switch ($_GET["op"]) {
                 case 2:
                     if ($p1 == 1)
                     {
-                        $sub_array[] = Strings::rdecimal($precio1, 2);
+                        $sub_array[] = Strings::rdecimal($preciou1, 2);
                     } else {
-                        $sub_array[] = Strings::rdecimal($precio2, 2);
+                        $sub_array[] = Strings::rdecimal($preciou2, 2);
                     }
                     if ($p3 == 3)
                     {
-                        $sub_array[] = Strings::rdecimal($precio3, 2);
+                        $sub_array[] = Strings::rdecimal($preciou3, 2);
                     } else {
-                        $sub_array[] = Strings::rdecimal($precio2, 2);
+                        $sub_array[] = Strings::rdecimal($preciou2, 2);
                     }
                     break;
                 default: /** 0 || 3**/
-                    $sub_array[] = Strings::rdecimal($precio1, 2);
-                    $sub_array[] = Strings::rdecimal($precio2, 2);
-                    $sub_array[] = Strings::rdecimal($precio3, 2);
+                    $sub_array[] = Strings::rdecimal($preciou1, 2);
+                    $sub_array[] = Strings::rdecimal($preciou2, 2);
+                    $sub_array[] = Strings::rdecimal($preciou3, 2);
                 }
 
         
@@ -145,21 +145,21 @@ switch ($_GET["op"]) {
                 case 2:
                     if ($p1 == 1)
                     {
-                        $sub_array[] = Strings::rdecimal($preciou1, 2);
+                        $sub_array[] = Strings::rdecimal($precio1, 2);
                     } else {
-                        $sub_array[] = Strings::rdecimal($preciou2, 2);
+                        $sub_array[] = Strings::rdecimal($precio2, 2);
                     }
                     if ($p3 == 3)
                     {
-                        $sub_array[] = Strings::rdecimal($preciou3, 2);
+                        $sub_array[] = Strings::rdecimal($precio3, 2);
                     } else {
-                        $sub_array[] = Strings::rdecimal($preciou2, 2);
+                        $sub_array[] = Strings::rdecimal($precio2, 2);
                     }
                     break;
                 default: /** 0 || 3**/
-                    $sub_array[] = Strings::rdecimal($preciou1, 2);
-                    $sub_array[] = Strings::rdecimal($preciou2, 2);
-                    $sub_array[] = Strings::rdecimal($preciou3, 2);
+                    $sub_array[] = Strings::rdecimal($precio1, 2);
+                    $sub_array[] = Strings::rdecimal($precio2, 2);
+                    $sub_array[] = Strings::rdecimal($precio3, 2);
             }
 
             if ($cubi == 1) {

@@ -9,7 +9,7 @@ class FacturaSinDes extends Conectar{
     {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -187,7 +187,7 @@ class FacturaSinDes extends Conectar{
 
     public function getCanales(){
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
@@ -199,7 +199,7 @@ class FacturaSinDes extends Conectar{
 
     public function get_cabecera_factura_por_id($numerod, $tipofac){
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 

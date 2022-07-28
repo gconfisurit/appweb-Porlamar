@@ -43,7 +43,7 @@ switch ($_GET["op"]) {
             $sub_array[] = $row["codvend"];
             $sub_array[] = $row["Ruta_Alternativa"];
             $sub_array[] = $row["Ruta_Alternativa_2"];
-            $sub_array[] = strtoupper($row["DiasVisita"]);
+            $sub_array[] = strtoupper($row["DiasVisitas"]);
             $sub_array[] = $row["Direc1"].' '.$row["Direc2"];
             $sub_array[] = $row["CodNestle"];
 

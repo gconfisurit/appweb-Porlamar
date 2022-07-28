@@ -8,7 +8,7 @@ class Listadeprecio extends Conectar{
 	public function getListadeprecios($marca, $depos, $exis, $orden){
 
 		 //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-		 //CUANDO ES APPWEB ES CONEXION.
+		 //CUANDO ES appweb-Porlamar ES CONEXION.
 		$conectar= parent::conexion2();
 		parent::set_names();
 
@@ -49,7 +49,7 @@ class Listadeprecio extends Conectar{
 
         switch ($opc) {
         	case 1:
-        	$sql = "SELECT saprod.CodProd AS codprod, marca, Descrip AS descrip, Cubicaje AS cubicaje, SUM(saexis.Existen) AS existen, Precio1 AS precio1, Precio2 AS precio2, Precio3 AS precio3, SUM(saexis.ExUnidad) AS exunidad, PrecioU AS preciou1, PrecioU2 AS preciou2, PrecioU3 AS preciou3 
+        	$sql = "SELECT saprod.CodProd AS codprod, marca, Descrip AS descrip,  EsExento AS esexento, Cubicaje AS cubicaje, SUM(saexis.Existen) AS existen, Precio1 AS precio1, Precio2 AS precio2, Precio3 AS precio3, SUM(saexis.ExUnidad) AS exunidad, PrecioU AS preciou1, PrecioU2 AS preciou2, PrecioU3 AS preciou3 
                         FROM saexis 
                             INNER JOIN saprod ON saexis.codprod = saprod.codprod 
                             LEFT JOIN saprod_01 ON saprod.codprod = saprod_01.codprod 

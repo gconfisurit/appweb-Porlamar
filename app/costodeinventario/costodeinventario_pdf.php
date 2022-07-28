@@ -30,14 +30,19 @@ if(count($numero)>0) {
     }
 }
 
-$costos = 0;
-$costos_p = 0;
-$precios = 0;
-$bultos = 0;
-$paquetes = 0;
-$total_costo_bultos = 0;
-$total_costo_paquetes = 0;
-$total_tara = 0;
+        $factor=0;
+        $costosd = 0;
+        $costos_pd = 0;
+        $costos = 0;
+        $costos_p = 0;
+        $precios = 0;
+        $bultos = 0;
+        $paquetes = 0;
+        $total_costo_bultos = 0;
+        $total_costo_paquetes = 0;
+        $total_costo_bultosd = 0;
+        $total_costo_paquetesd = 0;
+        $total_tara = 0;
 
 //array of space in cells
 $j = 0;
@@ -74,11 +79,15 @@ class PDF extends FPDF
         $this->Cell(addWidthInArray(22), 6, utf8_decode(Strings::titleFromJson('marca_prod')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(29), 6, utf8_decode(Strings::titleFromJson('costo_bultos')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(29), 6, utf8_decode(Strings::titleFromJson('costo_paquete')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(29), 6, utf8_decode(Strings::titleFromJson('costo_bultosd')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(29), 6, utf8_decode(Strings::titleFromJson('costo_paqueted')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(29), 6, utf8_decode(Strings::titleFromJson('precio')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(19), 6, utf8_decode(Strings::titleFromJson('bultos')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(19), 6, utf8_decode(Strings::titleFromJson('paquetes')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(37), 6, utf8_decode(Strings::titleFromJson('totalcosto_bultos')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(45), 6, utf8_decode(Strings::titleFromJson('totalcosto_paquetes')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(37), 6, utf8_decode(Strings::titleFromJson('totalcosto_bultosd')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(45), 6, utf8_decode(Strings::titleFromJson('totalcosto_paquetesd')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(18), 6, utf8_decode(Strings::titleFromJson('tara')), 1, 1, 'C', true);
 
     }
@@ -93,7 +102,7 @@ class PDF extends FPDF
 
 $pdf = new PDF();
 $pdf->AliasNbPages();
-$pdf->AddPage('L', $documentsize);
+$pdf->AddPage('L',array(200,490));
 $pdf->SetFont('Arial', '', 8);
 
 $pdf->SetWidths($width);
@@ -109,6 +118,8 @@ foreach ($query as $i) {
         $cdisplay = $i['costo'] / $i['display'];
     }
 
+    $factor=$i['factor'];
+
     $pdf->Row(
         array(
             $i['codprod'],
@@ -116,22 +127,30 @@ foreach ($query as $i) {
             $i['marca'],
             Strings::rdecimal($i['costo'],2),
             Strings::rdecimal($cdisplay,2),
+            Strings::rdecimal($i['costo']/$factor,2),
+            Strings::rdecimal($cdisplay/$factor,2),
             Strings::rdecimal($i['precio'],2),
             Strings::rdecimal($i['bultos'],2),
             Strings::rdecimal($i['paquetes'],2),
             Strings::rdecimal($i['costo'] * $i['bultos'],2),
             Strings::rdecimal($cdisplay * $i['paquetes'],2),
+            Strings::rdecimal(($i['costo'] /$factor )* $i['bultos'],2),
+            Strings::rdecimal(($cdisplay /$factor)* $i['paquetes'],2),
             Strings::rdecimal($i['tara'],2)
         )
     );
 
     $costos += $i['costo'];
     $costos_p += $cdisplay;
+    $costosd += $i['costo']/$factor;
+    $costos_pd += $cdisplay/$factor;
     $precios += $i['precio'];
     $bultos += $i['bultos'];
     $paquetes += $i['paquetes'];
     $total_costo_bultos += ($i['costo'] * $i['bultos']);
     $total_costo_paquetes += ($cdisplay * $i['paquetes']);
+    $total_costo_bultosd += (($i['costo'] /$factor )* $i['bultos']);
+    $total_costo_paquetesd += (($cdisplay /$factor)* $i['paquetes']);
     $total_tara += $i['tara'];
 }
 $pdf->SetFont('Arial', '', 9);
@@ -140,11 +159,15 @@ $pdf->Row(
         '', '', 'TOTALES: ',
         Strings::rdecimal($costos,2),
         Strings::rdecimal($costos_p,2),
+        Strings::rdecimal($costosd,2),
+        Strings::rdecimal($costos_pd,2),
         Strings::rdecimal($precios,2),
         Strings::rdecimal($bultos,2),
         Strings::rdecimal($paquetes,2),
         Strings::rdecimal($total_costo_bultos,2),
         Strings::rdecimal($total_costo_paquetes,2),
+        Strings::rdecimal($total_costo_bultosd,2),
+        Strings::rdecimal($total_costo_paquetesd,2),
         Strings::rdecimal($total_tara,2)
     )
 );

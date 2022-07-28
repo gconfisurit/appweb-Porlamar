@@ -6,7 +6,7 @@ class Usuarios extends Conectar
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT cedula, login, nomper, email, clave, id_rol, fecha_registro, fecha_ult_ingreso, estado 
                FROM Usuarios WHERE deleted_at IS NULL";
@@ -19,7 +19,7 @@ class Usuarios extends Conectar
     public static function byUserName($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT cedula, login, nomper, email, clave, id_rol, fecha_registro, fecha_ult_ingreso, estado
                 FROM Usuarios WHERE deleted_at IS NULL AND login = ?";
@@ -33,7 +33,7 @@ class Usuarios extends Conectar
     public static function byDni($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT cedula, login, nomper, email, clave, id_rol, fecha_registro, fecha_ult_ingreso, estado 
                 FROM Usuarios WHERE deleted_at IS NULL AND cedula = ?";
@@ -47,7 +47,7 @@ class Usuarios extends Conectar
     public static function byRol($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql= "SELECT cedula, login, nomper, email, clave, id_rol, fecha_registro, fecha_ult_ingreso, estado 
                FROM Usuarios WHERE deleted_at IS NULL AND ID_Rol = ?";
@@ -63,7 +63,7 @@ class Usuarios extends Conectar
         $i = 0;
         date_default_timezone_set('America/Caracas');
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql = "UPDATE Usuarios SET Clave=? WHERE Login=?";
 

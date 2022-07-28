@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -29,7 +29,7 @@ if (!isset($_SESSION['cedula'])) {
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="../principal.php">Inicio</a></li>
-							<li class="breadcrumb-item active">Facturas por Cobrar</li>
+							<li class="breadcrumb-item active">Notas de Entregas por Cobrar</li>
 						</ol>
 					</div>
 				</div>
@@ -41,7 +41,7 @@ if (!isset($_SESSION['cedula'])) {
 				<!-- BOX TABLA -->
 				<div class="card card-info" id="tabla_detalle">
 					<div class="card-header">
-						<h3 class="card-title">Relación de Notas de Entregas por Cobrar</h3>
+						<h3 class="card-title">Relación de Facturas por Cobrar</h3>
 					</div>
 					<div class="card-body table-responsive mt-2 p-0" style="width:100%; height:400px;">
 						<table class="table table-hover table-condensed table-bordered table-striped text-center" style="width:100%;" id="cobrar_data_detalle">

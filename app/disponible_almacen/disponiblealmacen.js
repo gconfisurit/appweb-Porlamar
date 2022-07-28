@@ -67,7 +67,13 @@ function validarCantidadRegistrosTabla() {
 //ACCION AL PRECIONAR EL BOTON.
 $(document).on("click", "#btn_consultar", function () {
 
-    var marcas = $("#marcas").val();
+  
+
+    if ($("#marcasd").val()){
+        var marcas = $("#marcasd").val();
+    }else{
+        var marcas = $("#marcas").val();
+    }
     
     if (estado_minimizado) {
         $("#tabla").hide();

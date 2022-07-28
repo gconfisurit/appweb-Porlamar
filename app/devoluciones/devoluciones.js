@@ -199,4 +199,46 @@ function mostrar() {
     $("#cuenta").html(texto + cuenta);
 }
 
+function obtener_datos(ndevolucion, tipo) {
+
+
+$("#editarMotivo").submit(function (event) {
+    $('#btnGuardarmotivo').attr("disabled", true);
+    var queryString = window.location.search;
+    var parametros = $(this).serialize();
+
+    var motivo = $('#motivo').val();
+    alert(tipo);
+
+    $.ajax({
+        type: "POST",
+        url: "devoluciones_controlador.php?op=editarMotivo",
+        data: { ndevolucion:ndevolucion , motivo:motivo , tipo:tipo},
+        beforeSend: function () {
+            SweetAlertLoadingShow();
+        },
+        error: function (e) {
+            isError = SweetAlertError(e.responseText, "Error!")
+            
+            console.log(e.responseText);
+        },
+        success: function (datos) {
+           // $("#resultados_ajax_entregable_editar").html(datos);
+            $('#btnGuardarmotivo').attr("disabled", false);
+            let { icono, mensaje } = datos;
+            ToastSweetMenssage(icono, mensaje);
+            $('#editarMotivo').modal('hide');
+
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            
+
+        }
+    });
+    event.preventDefault();
+});
+
+}
+
 init();

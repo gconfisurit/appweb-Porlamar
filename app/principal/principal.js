@@ -6,6 +6,7 @@ function init() {
     fetch_cxc();
     fetch_cxp();
     cargar_grafica_ventasXmesdivisas();
+    cargar_grafica_ventasXmesBULTOS();
     fetch_inventario_valorizado();
     fetch_clientes();
     fetch_total_ventas_mes_encurso();
@@ -13,6 +14,7 @@ function init() {
     fetch_devoluciones_sin_motivo();
     fetch_top_marcas();
     fetch_top_clientes();
+    fetch_top_productos();
 }
 
 function fetch_pordespachar() {
@@ -86,9 +88,10 @@ function fetch_cxc() {
         },
         success: function (data) {
             if(!jQuery.isEmptyObject(data)){
-                let { cxc_bs, cxc_$ } = data;
+                let { cxc_bs, cxc_bs_dolar, cxc_$ } = data;
                 $('#cxc_in_dolar').text(cxc_$);
                 $('#cxc_in_bs').text(cxc_bs);
+                $('#cxc_in_bs_dolar').text(cxc_bs_dolar);
             }
         },
         complete: function () {
@@ -179,6 +182,60 @@ function cargar_grafica_ventasXmesdivisas() {
     });
 }
 
+function cargar_grafica_ventasXmesBULTOS() {
+    let isError = false;
+    $.ajax({
+        cache: false,
+        async: false,
+        url: "principal/principal_controlador.php?op=buscar_ventasPormesbultos",
+        type: "post",
+        dataType: "json",
+        beforeSend: function () {
+            $('#loader_ventas_por_mes_dos').show()
+        },
+        error: function (e) {
+            isError = SweetAlertError(e.responseText, "Error!")
+            send_notification_error(e.responseText);
+            console.log(e.responseText);
+        },
+        success: function (data) {
+            if (!jQuery.isEmptyObject(data)) {
+                let { anio, cantidad_meses_evaluar, datos, valor_mas_alto } = data;
+
+                $('#title_ventas_dos').text('del año ' + anio);
+
+                let labels = [], values = [];
+                if (!jQuery.isEmptyObject(datos)) {
+                    //titulos de las barras
+                    labels = datos[0].ventas_ano_actual.map(val => { return val.mes; });
+
+                    //acumulado de ventas
+                    $('#acum_ventas_anio_actual_dos')
+                        .html(`${sum(datos[0].ventas_ano_actual.map(val => { return parseFloat(val.valor); }))
+                            .format_money( '.', ',')}</span><sup style="font-size: 18px">Bultos</sup>`
+                        );
+
+                    //simbolizacion ventas desde mes pasado
+                    const porcentaje = incremento_porcentual_ventas(datos[0].ventas_ano_actual);
+                    $('.incremento_ventas_dos').removeClass('text-success').addClass((porcentaje >= 0) ? 'text-success' : 'text-danger')
+                    $('.incremento_ventas_dos').html(`<i class="fas fa-arrow-${(porcentaje >= 0) ? 'up' : 'dowm'}"></i> ${porcentaje.format_money(2, 3, '.', ',')} %`);
+
+                    //valores de las barras
+                    values[0] = get_values(datos[0].ventas_ano_actual, cantidad_meses_evaluar);
+                    values[1] = get_values(datos[1].ventas_ano_anterior, cantidad_meses_evaluar);
+                }
+
+                graficar(labels, values, (parseInt(valor_mas_alto) * 1.05), 1000, '', $('#sales-chart_dos'), 'line');
+            } else {
+                $('#sales-chart_dos').html('<div class="alert alert-warning">No existe datos para el grafico. </div>');
+            }
+        },
+        complete: function () {
+            if (!isError) $('#loader_ventas_por_mes_dos').hide();
+        }
+    });
+}
+
 function fetch_inventario_valorizado() {
     let isError = false;
     $.ajax({
@@ -216,6 +273,95 @@ function fetch_inventario_valorizado() {
             if(!isError) $('#loader_inventario_valorizado').hide();
         }
     });
+}
+
+
+function modalVerDetalleAlmacen(correlativo) {
+    if (correlativo !== "") {
+        let isError = false;
+        $("#ver_detalle_almacen").val(correlativo);
+
+        var almacen = '';
+        if (correlativo == '01') {
+            almacen = 'Deposito Principal';
+        } else {
+            if (correlativo == '02') {
+                almacen = 'Chatarra';
+            } else {
+                if (correlativo == '03') {
+                    $almacen = 'Faltante en Despacho';
+                } else {
+                    if (correlativo == '11') {
+                        almacen = 'Deposito mercancia rota';
+
+                    } else {
+                        if (correlativo == '31') {
+                            almacen = 'Deposito Vencido actual';
+                        } else {
+                            if (correlativo == '14') {
+                                almacen = 'Muestra Dev';
+                            } else {
+                                if (correlativo == '100') {
+                                    almacen = 'Devolucion Proveedor';
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $("#detalle_almacen").text(almacen);
+        $('#verDetalleDealmacenModal').modal('show');
+
+        $.ajax({
+            url: "principal/principal_controlador.php?op=buscar_detalles_almacenes",
+            method: "post",
+            dataType: "json",
+            data: { correlativo:correlativo },
+            beforeSend: function () {
+                SweetAlertLoadingShow();
+            },
+            error: function (e) {
+                isError = SweetAlertError(e.responseText, "Error!")
+                send_notification_error(e.responseText);
+                console.log(e.responseText);
+            },
+            success: function (data) {
+
+                //TABLA DE LAS FACTURAS DENTRO DE ESE DESPACHO
+                $('#tabla_detalle_almacen').dataTable({
+                    "aProcessing": true,//Activamos el procesamiento del datatables
+                    "aServerSide": true,//Paginación y filtrado realizados por el servidor
+
+                    "sEcho": data.tabla.sEcho, //INFORMACION PARA EL DATATABLE
+                    "iTotalRecords": data.tabla.iTotalRecords, //TOTAL DE REGISTROS AL DATATABLE.
+                    "iTotalDisplayRecords": data.tabla.iTotalDisplayRecords, //TOTAL DE REGISTROS A VISUALIZAR.
+                    "aaData": data.tabla.aaData, // informacion por registro
+
+                    "bDestroy": true,
+                    "responsive": true,
+                    "bInfo": true,
+                    "iDisplayLength": 10,//Por cada 10 registros hace una paginación
+                    "order": [[0, "asc"]],//Ordenar (columna,orden)
+                    'columnDefs': [{
+                        "targets": 3, // your case first column
+                        "className": "text-center",
+                    }],
+                    "language": texto_español_datatables
+                }).DataTable();
+
+                $("#total_cantBul_tfoot").text(data.cantidad_b);
+                $("#total_cantPaq_tfoot").text(data.cantidad_p);
+                $("#cantBul_tfoot").text(data.total_b);
+                $("#cantPaq_tfoot").text(data.total_p);
+                $("#cantValor_tfoot").text(data.total);
+                $("#loader_detalle_productos_despacho").hide();//OCULTAMOS EL LOADER.
+            },
+            complete: function () {
+                if (!isError) SweetAlertLoadingClose();
+            }
+        });
+    }
 }
 
 function fetch_clientes() {
@@ -408,5 +554,48 @@ function fetch_top_clientes() {
         }
     });
 }
+
+
+function fetch_top_productos() {
+    let isError = false;
+    $.ajax({
+        cache: true,
+        url: "principal/principal_controlador.php?op=listar_ventas_por_productos",
+        method: "get",
+        dataType: "json",
+        beforeSend: function () {
+            $('#loader_ventas_por_productos').show()
+        },
+        error: function (e) {
+            isError = SweetAlertError(e.responseText, "Error!")
+            send_notification_error(e.responseText);
+            console.log(e.responseText);
+        },
+        success: function (data) {
+            if (!jQuery.isEmptyObject(data)) {
+                let { fecha, marcas } = data;
+
+                $('#title_ventas_productos').text(fecha);
+
+                $.each(marcas, function (idx, opt) {
+                    $('#ventas_por_productos')
+                        .append(
+                            '<tr>' +
+                            '<td class="align-middle">' + idx + '</td>' +
+                            '<td class="align-middle">' + opt.format_money(2, 3, '.', ',') + ' $</td>' +
+                            '</tr>'
+                        );
+                });
+            } else {
+                //en caso de consulta vacia, mostramos un mensaje de vacio
+                $('#ventas_por_productos').append('<tr><td colspan="2" align="center">Sin registros para esta Consulta</td></tr>');
+            }
+        },
+        complete: function () {
+            if (!isError) $('#loader_ventas_por_productos').hide();
+        }
+    });
+}
+
 
 init();

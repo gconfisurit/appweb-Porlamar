@@ -72,7 +72,7 @@ function modalEditarDespachos(correlativo) { //editar
                     url: 'despachosrelacion_controlador.php?op=buscar_destalle_despacho_por_correlativo',
                     method: "POST",
                     dataType: "json",
-                    data: { correlativo: correlativo },
+                    data: { correlativo:correlativo },
                     error: function (e) {
                         SweetAlertError(e.responseText, "Error!")
                         send_notification_error(e.responseText);
@@ -101,7 +101,7 @@ function modalMostrarEditarDespacho(correlativo) {
         url: "despachosrelacion_controlador.php?op=buscar_cabeceraDespacho_para_editar",
         method: "POST",
         dataType: "json",
-        data: {correlativo: correlativo},
+        data: {correlativo:correlativo},
         beforeSend: function () {
             SweetAlertLoadingShow();
         },
@@ -116,7 +116,7 @@ function modalMostrarEditarDespacho(correlativo) {
             $('#chofer_editar').append('<option name="" value="">Seleccione</option>');
             $.each(data.lista_choferes, function(idx, opt) {
                 //se itera con each para llenar el select en la vista
-                $('#chofer_editar').append('<option name="" value="' + opt.Cedula +'">' + opt.Nomper + '</option>');
+                $('#chofer_editar').append('<option name="" value="' + opt.cedula + '">'+ opt.descripcion + '</option>');
             });
 
             //lista de seleccion de vehiculos
@@ -124,7 +124,7 @@ function modalMostrarEditarDespacho(correlativo) {
             $('#vehiculo_editar').append('<option name="" value="">Seleccione</option>');
             $.each(data.lista_vehiculos, function(idx, opt) {
                 //se itera con each para llenar el select en la vista
-                $('#vehiculo_editar').append('<option name="" value="' + opt.id +'">' + opt.modelo + '  ' + opt.capacidad + ' Kg' + '</option>');
+                $('#vehiculo_editar').append('<option name="" value="' + opt.placa +'">' + opt.modelo + '  ' + opt.capacidad + ' Kg' + '</option>');
             });
 
             $("#destino_editar").val(data.destino);
@@ -154,7 +154,7 @@ function modalGuardarEditarDespacho() {
             url: "despachosrelacion_controlador.php?op=actualizar_cabeceraDespacho_para_editar",
             method: "POST",
             dataType: "json",
-            data: {correlativo: correlativo, destino: destino, fechad: fechad, chofer: chofer, vehiculo: vehiculo},
+            data: {correlativo:correlativo, destino:destino, fechad:fechad, chofer:chofer, vehiculo:vehiculo},
             beforeSend: function () {
                 SweetAlertLoadingShow();
             },
@@ -567,6 +567,13 @@ $(document).on("click", "#btnBuscarDocModal", function () {
 //ACCION AL PRECIONAR EL BOTON EXPORTAR A PDF DE DETALLE PRODUCTOS EN UN DESPACHO.
 $(document).on("click", "#exportarDetalleDespacho_pdf", function () {
     abrirReporteProductosDeUnDepacho(
+        $("#correlativo_ver_productos_despacho").val()
+    );
+});
+
+//ACCION AL PRECIONAR EL BOTON EXPORTAR A PDF DE DETALLE PRODUCTOS EN UN DESPACHO.
+$(document).on("click", "#DetalladoDespacho_pdf", function () {
+    abrirReporteDetalleCompletoDeUnDepacho(
         $("#correlativo_ver_productos_despacho").val()
     );
 });

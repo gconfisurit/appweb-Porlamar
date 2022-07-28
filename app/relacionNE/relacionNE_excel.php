@@ -64,12 +64,18 @@ $spreadsheet->getActiveSheet()->mergeCells('A1:C1');
 /** TITULO DE LA TABLA **/
 $sheet->setCellValue('A7', Strings::titleFromJson('tipo_transaccion'))
     ->setCellValue('B7', Strings::titleFromJson('numerod'))
-    ->setCellValue('C7', Strings::titleFromJson('codprov'))
-    ->setCellValue('D7', Strings::titleFromJson('razon_social'))
-    ->setCellValue('E7', Strings::titleFromJson('fecha_documento'))
-    ->setCellValue('F7', Strings::titleFromJson('codvend'))
-    ->setCellValue('G7', Strings::titleFromJson('subtotal'))
-    ->setCellValue('H7', Strings::titleFromJson('total'));
+    ->setCellValue('C7', 'Número de Factura')
+	->setCellValue('D7', 'Número de Devolución')
+    ->setCellValue('E7', Strings::titleFromJson('codprov'))
+    ->setCellValue('F7', Strings::titleFromJson('razon_social'))
+    ->setCellValue('G7', Strings::titleFromJson('fecha_documento'))
+    ->setCellValue('H7', "Código EDV")
+    ->setCellValue('I7', Strings::titleFromJson('total'))
+    ->setCellValue('J7', 'Monto DEV')
+	->setCellValue('K7', 'Abono')
+	->setCellValue('L7', 'Saldo')
+	->setCellValue('M7', 'Descuento')
+	->setCellValue('N7', 'Estatus');
 
 $style_title = new Style();
 $style_title->applyFromArray(
@@ -77,7 +83,7 @@ $style_title->applyFromArray(
 );
 
 //estableceer el estilo de la cabecera de la tabla
-$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:H7');
+$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:N7');
 
 
 $query = $notaentrega->getdevolucionnotaentrega( $fechai, $fechaf,$ruta);
@@ -92,16 +98,111 @@ foreach ($query as $i) {
     $fecha_E = date('d/m/Y', strtotime($i["fechae"]));
     $subtotal = number_format($i["subtotal"], 2, ',', '.');
     $total = number_format($i["total"], 2, ',', '.');
+
+       $estado='';
+       $saldo = 0;
+       $montototal =0;
+        $montototaldv = $abono =0; 
+        $montoDEV ='';
+
+        $auxDEV =  $notaentrega->getmontoDEV( $i["numerodv"]);
+        foreach ($auxDEV as $row1) 
+            {
+                $montoDEV = $row1["total"];
+            }
+
+
+        $descuentosanota = $notaentrega->get_descuentosanota( $i["numerod"]);
+        $descuentosaitemnota = $notaentrega->get_descuentosaitemnota( $i["numerod"]);
+
+         if ($descuentosaitemnota[0]["descuento"] > 0 &&  $descuentosanota[0]["descuento"] > 0) {
+        $tdescuento = $descuentosaitemnota[0]["descuento"] +  $descuentosanota[0]["descuento"];
+      } elseif ($descuentosaitemnota[0]["descuento"] > 0) {
+        $tdescuento = $descuentosaitemnota[0]["descuento"];
+      } elseif ($descuentosanota[0]["descuento"] > 0) {
+        $tdescuento =  $descuentosanota[0]["descuento"];
+      } else {
+        $tdescuento = 0;
+      }
+
+      if ($i["estatus"] == 0) {
+          $estado= "Pendiente";
+        } elseif ($i["estatus"] == 1) {
+           $estado= "Abono";
+        } elseif ($i["estatus"] == 2) {
+           $estado= "Facturada";
+        } elseif ($i["estatus"] == 4) {
+           $estado= "Devolucion";
+        } elseif ($i["estatus"] == 3) {
+           $estado= "Pagada";
+        }elseif ($i["estatus"] == 5) {
+            $estado= "PROCESADA";
+        }
+
+       $montototal = $i["total"];
+        $abono =$i["abono"];
+        $montototaldv = $montoDEV;
+
+ if (count($auxDEV)!= 0 & $i["estatus"] == 0) {
+                
+                $saldo=($montototal - $abono) - $montototaldv ;
+
+            } else {
+
+                if (count($auxDEV)!= 0 & $i["estatus"] == 1) {
+                
+                $saldo=($montototal - $abono) - $montototaldv ;
+
+                } else{
+                   
+                    if ($i["estatus"] == 0) {
+                
+                       $saldo=($montototal - $abono);
+
+                    } else{
+                        if ($i["estatus"] == 1) {
+                
+                           $saldo=($montototal - $abono);
+
+                         } else{
+                             if ($i["estatus"] ==3) {
+                
+                             $saldo=0;
+
+                            }else{
+                                $saldo=0;
+                            }
+                         }
+                    }
+                }
+                
+                
+            }
+
+        if ($i["numerodv"] == 0 or $i["numerodv"] =='' or $i["numerodv"] =='NULL') {
+           $devolucion= "0";
+        }else{
+            $devolucion= $i["numerodv"];
+        }
+
+
+
     
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setCellValue('A' . $row, $tipo);
     $sheet->setCellValue('B' . $row, $i['numerod']);
-    $sheet->setCellValue('C' . $row, $i['rif']);
-    $sheet->setCellValue('D' . $row, utf8_encode($i['rsocial']));
-    $sheet->setCellValue('E' . $row, $fecha_E);
-    $sheet->setCellValue('F' . $row, $i['codvend']);
-    $sheet->setCellValue('G' . $row, $subtotal);
-    $sheet->setCellValue('H' . $row, $total);
+    $sheet->setCellValue('C' . $row, $i['numerof']);
+    $sheet->setCellValue('D' . $row, $devolucion);
+    $sheet->setCellValue('E' . $row, $i['rif']);
+    $sheet->setCellValue('F' . $row, utf8_encode($i['rsocial']));
+    $sheet->setCellValue('G' . $row, $fecha_E);
+    $sheet->setCellValue('H' . $row, $i['codvend']);
+    $sheet->setCellValue('I' . $row, $total);
+    $sheet->setCellValue('J' . $row, $montoDEV);
+    $sheet->setCellValue('K' . $row, number_format($i["abono"], 2, ',', '.'));
+    $sheet->setCellValue('L' . $row, $saldo);
+    $sheet->setCellValue('M' . $row, $tdescuento);
+    $sheet->setCellValue('N' . $row, $estado);
 
     /** centrar las celdas **/
     $spreadsheet->getActiveSheet()->getStyle('A'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
@@ -112,7 +213,12 @@ foreach ($query as $i) {
     $spreadsheet->getActiveSheet()->getStyle('F'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('G'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('H'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
-
+    $spreadsheet->getActiveSheet()->getStyle('I'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('J'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('K'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('L'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('M'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+    $spreadsheet->getActiveSheet()->getStyle('N'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
 
     $row++;
 }

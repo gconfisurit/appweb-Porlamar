@@ -71,11 +71,13 @@ switch ($_GET["op"]) {
 
         $datos = $facturas->getdetallesfacturasporcobrar( $fechai, $fechaf, $dataop);
 $suma_monto=0;
+$suma_montodolar=0;
         foreach ($datos as $row) {
             //DECLARAMOS UN SUB ARRAY Y LO LLENAMOS POR CADA REGISTRO EXISTENTE.
         $sub_array = array();
 
         $SaldoPend = number_format($row["SaldoPend"], 2, ',', '.');
+        $SaldoPendolar = number_format($row["SaldoPendolar"], 2, ',', '.');
         
         $fecha_E = date('d/m/Y', strtotime($row["FechaEmi"]));
         $fecha_Desp = date('d/m/Y', strtotime($row["FechaDesp"]));
@@ -89,9 +91,11 @@ $suma_monto=0;
         $sub_array[] = $row["DiasTrans"];
         $sub_array[] = $row["DiasTransHoy"];
         $sub_array[] = $SaldoPend;
+        $sub_array[] = $SaldoPendolar;
         $sub_array[] = $row["Ruta"];
         $sub_array[] = $row["Supervisor"];
         $suma_monto += $row["SaldoPend"];
+        $suma_montodolar += $row["SaldoPendolar"];
 
 
         $data[] = $sub_array;
@@ -103,6 +107,7 @@ $suma_monto=0;
             "sEcho" => 1, //INFORMACION PARA EL DATATABLE
             "iTotalRecords" => count($data), //ENVIAMOS EL TOTAL DE REGISTROS AL DATATABLE.
             'Mtototal' => Strings::rdecimal($suma_monto, 2),
+            'Mtototaldolar' => Strings::rdecimal($suma_montodolar, 2),
             "iTotalDisplayRecords" => count($data), //ENVIAMOS EL TOTAL DE REGISTROS A VISUALIZAR.
             "aaData" => $data);
     

@@ -1,22 +1,23 @@
 <?php
 
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
-require_once '../config/conexion.php';
+require_once("../config/conexion.php");
 ?>
 <!DOCTYPE html>
 <html>
-<?php require_once 'header.php'; ?>
+<?php require_once("header.php"); ?>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-    <?php require_once 'menu_lateral.php'; ?>
+    <?php require_once("menu_lateral.php"); ?>
     <div class="content-wrapper">
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">COMERCIALIZADORA CONFISUR PORLAMAR, C.A</h1>
+                        <h1 class="m-0 text-dark">COMERCIALIZADORA CONFISUR PORLAMAR, C.A.</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -63,7 +64,7 @@ require_once '../config/conexion.php';
                                 <h3>
                                     <span id="pedsPorFacturar">0</span>
                                 </h3>
-                                <p>Pedidos por facturar</p>
+                                <p>Productos por facturar</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -72,7 +73,7 @@ require_once '../config/conexion.php';
                                         class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
-
+<?php if ($_SESSION['rol'] != '5') { ?>
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <!-- Loading (remove the following to stop the loading)-->
@@ -82,9 +83,9 @@ require_once '../config/conexion.php';
 
                             <div class="inner">
                                 <h5 style="font-weight: 700">
-                                    <span id="cxc_in_bs">0,0</span><sup style="font-size: 16px">BS</sup>
+                                    <a class="" style="color:#343433" href="facturasporcobrar/facturasporcobrar.php"><span id="cxc_in_bs">0,0</span><sup style="font-size: 16px">BS</sup></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="" style="color:#343433" href="facturasporcobrar/facturasporcobrar.php"><span id="cxc_in_bs_dolar">0,0</span><sup style="font-size: 16px">$</sup></a>
                                     <br>
-                                    <span id="cxc_in_dolar">0,0</span><sup style="font-size: 16px">$</sup>
+                                     <a class="" style="color:#343433" href="NEporcobrar/NEporcobrar.php"><span id="cxc_in_dolar">0,0</span><sup style="font-size: 16px">$</sup></a>
 
                                 </h5>
 
@@ -120,7 +121,7 @@ require_once '../config/conexion.php';
                                         class="fas fa-arrow-circle-right"></i></a>-->
                         </div>
                     </div>
-
+<?php } ?>
                 </div>
 
                 <div class="row">
@@ -172,7 +173,8 @@ require_once '../config/conexion.php';
 
                             <div class="info-box-content inner">
                                 <span class="info-box-text">Tasa dolar</span>
-                                <span id="tasa_dolar" class="info-box-number">0,0<sup style="font-size: 16px">$</sup></span>
+                                <a class="" style="color:#343433" href="factorcambiario/factorcambiario.php"><span id="tasa_dolar" class="info-box-number">0,0<sup style="font-size: 16px">$</sup></span></a>
+                               
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -239,6 +241,60 @@ require_once '../config/conexion.php';
                             </div>
                         </div>
                     </div>
+
+
+
+                     <!-- SEGUNDA GRAFICA -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <!-- Loading (remove the following to stop the loading)-->
+                            <div id="loader_ventas_por_mes_dos" class="overlay dark">
+                                <i class="fas fa-3x fa-sync-alt"></i>
+                            </div>
+
+                            <div class="card-header border-0">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="card-title">Bultos Vendidos <span id="title_ventas_dos"></span></h3>
+                                    <a href="javascript:void(0);">Ver Reporte</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex">
+
+                                    <p class="d-flex flex-column">
+                                        <span id="acum_ventas_anio_actual_dos" class="text-bold text-lg">Bultos 0</span>
+                                        <span>Ventas a lo largo del tiempo</span>
+                                    </p>
+                                    <p class="ml-auto d-flex flex-column text-right">
+                                        <span class="text-success incremento_ventas_dos">
+                                            <i class="fas fa-arrow-up"></i> 0.0 %
+                                        </span>
+                                        <span class="text-muted">Desde el mes pasado</span>
+                                    </p>
+                                </div>
+                                <div class="position-relative mb-4">
+                                    <canvas id="sales-chart_dos" height="200"></canvas>
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-end">
+                                    <span class="mr-2"><i class="fas fa-square text-primary"></i> Bultos Este Año</span>
+                                    <span><i class="fas fa-square text-gray"></i> Bultos del Año Pasado</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                     <!-- FIN SEGUNDA GRAFICA -->
+
+
+
+                </div>
+<?php if ($_SESSION['rol'] != '5') { ?>
+                <div class="row">
+
+
+
+
                     <div class="col-lg-6">
                         <div class="card">
                             <!-- Loading (remove the following to stop the loading)-->
@@ -253,15 +309,9 @@ require_once '../config/conexion.php';
                                 <table id="inventario_valorizado" class="table table-striped table-valign-middle table-head-fixed text-nowrap text-center">
                                     <thead>
                                     <tr>
-                                        <th><?= Strings::titleFromJson(
-                                            'almacen'
-                                        ) ?></th>
-                                        <th><?= Strings::titleFromJson(
-                                            'valoracion'
-                                        ) ?></th>
-                                        <th><?= Strings::titleFromJson(
-                                            'detalle'
-                                        ) ?></th>
+                                        <th><?=Strings::titleFromJson('almacen')?></th>
+                                        <th><?=Strings::titleFromJson('valoracion')?></th>
+                                        <th><?=Strings::titleFromJson('detalle')?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -271,9 +321,11 @@ require_once '../config/conexion.php';
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
+
+
+
+
                     <div class="col-lg-6">
                         <div class="card">
                             <!-- Loading (remove the following to stop the loading)-->
@@ -288,12 +340,8 @@ require_once '../config/conexion.php';
                                 <table id="ventas_por_marca" class="table table-striped table-valign-middle table-head-fixed text-nowrap text-center">
                                     <thead>
                                     <tr>
-                                        <th><?= Strings::titleFromJson(
-                                            'marca_prod'
-                                        ) ?></th>
-                                        <th><?= Strings::titleFromJson(
-                                            'valoracion'
-                                        ) ?></th>
+                                        <th><?=Strings::titleFromJson('marca_prod')?></th>
+                                        <th><?=Strings::titleFromJson('valoracion')?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -317,12 +365,8 @@ require_once '../config/conexion.php';
                                 <table id="top_clientes" class="table table-striped table-valign-middle table-head-fixed text-nowrap text-center">
                                     <thead>
                                     <tr>
-                                        <th><?= Strings::titleFromJson(
-                                            'razon_social'
-                                        ) ?></th>
-                                        <th><?= Strings::titleFromJson(
-                                            'valoracion'
-                                        ) ?></th>
+                                        <th><?=Strings::titleFromJson('razon_social')?></th>
+                                        <th><?=Strings::titleFromJson('valoracion')?></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -332,19 +376,52 @@ require_once '../config/conexion.php';
                             </div>
                         </div>
                     </div>
-                </div>
 
+
+
+
+                     <div class="col-lg-6">
+                        <div class="card">
+                            <!-- Loading (remove the following to stop the loading)-->
+                            <div id="loader_ventas_por_productos" class="overlay dark">
+                                <i class="fas fa-3x fa-sync-alt"></i>
+                            </div>
+
+                            <div class="card-header border-0">
+                                <h3 class="card-title">TOP 10 - Productos <span id="title_ventas_productos"></span></h3>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="height: 360px;">
+                                <table id="ventas_por_productos" class="table table-striped table-valign-middle table-head-fixed text-nowrap text-center">
+                                    <thead>
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th><?=Strings::titleFromJson('valoracion')?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--el contenido llega por ajax-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+<?php } ?>
             </div>
         </section>
     </div>
 
-    <?php require_once 'footer.php'; ?>
+    <?php require_once("footer.php"); ?>
+     <?php include 'principal/modales/ver_productos_almacen_modal.html' ?>
 </div>
 
 <!-- ChartJS -->
 <script src="<?php echo URL_LIBRARY; ?>plugins/chart.js/Chart.min.js"></script>
 <!-- Custom -->
-<script type="text/javascript" src="<?php echo URL_HELPERS_JS; ?>Number.js"></script>
+<script type="text/javascript" src="<?php echo URL_HELPERS_JS ?>Number.js"></script>
 <script type="text/javascript" src="principal/grafico.js"></script>
 <script type="text/javascript" src="principal/principal.js"></script>
 </body>

@@ -15,9 +15,10 @@ $cabecera = NotasDeEntrega::getHeaderById($numerod);
 $descuentoitem  = Numbers::avoidNull( $nota->get_descuento($numerod, 'C')['descuento'] );
 
 $observacion = Strings::avoidNull($cabecera['notas1']);
-$subtotal = Strings::rdecimal($cabecera['subtotal']);
-$descuentototal = Strings::rdecimal($cabecera['descuento']);
-$totalnota = Strings::rdecimal($cabecera['total']);
+$Represent = Strings::avoidNull($cabecera['Represent']);
+$subtotal = Strings::rdecimal($cabecera['subtotal'],2);
+$descuentototal = Strings::rdecimal($cabecera['descuento'],2);
+$totalnota = Strings::rdecimal($cabecera['total'],2);
 
 //array of space in cells
 $s = 0;
@@ -84,21 +85,28 @@ class PDF extends FPDF
         $this->SetFont('Arial','B',8);
         $this->Cell(20,8, "Razon Social: ",0,0,'L');
         $this->SetFont('');
-        $this->Cell(79,8, $cabecera["rsocial"],0,0,'L');
+        $this->Cell(70,8, $cabecera["rsocial"],0,0,'L');
+
+        $this->SetFont('Arial','B',8);
+        $this->Cell(22,8, "Representante: ",0,0,'L');
+        $this->SetFont('');
+        $this->Cell(35,8, $cabecera["Represent"],0,0,'L');
+
         $this->SetFont('Arial','B',8);
         $this->Cell(14,8, "Telefono: ",0,0,'L');
         $this->SetFont('');
-        $this->Cell(33,8, $cabecera["telefono"],0,0,'L');
-        $this->SetFont('Arial','B',8);
-        $this->Cell(10,8, "Fecha: ",0,0,'L');
-        $this->SetFont('');
-        $this->Cell(20,8, Date(FORMAT_DATE, strtotime($cabecera['fechae'])),0,1,'L');
+        $this->Cell(28,8, $cabecera["telefono"],0,1,'L');
 
         $this->SetFont('Arial','B',8);
         $this->Cell(23,8, "Direccion Fiscal: ",0,0,'L');
         $this->SetFont('');
         $this->Cell(80,8, $cabecera["direccion"],0,1,'L');
-        $this->Cell(80,8, $cabecera["direccion2"],0,1,'L');
+        $this->Cell(140,8, $cabecera["direccion2"],0,0,'L');
+
+        $this->SetFont('Arial','B',8);
+        $this->Cell(10,8, "Fecha: ",0,0,'L');
+        $this->SetFont('');
+        $this->Cell(20,8, Date(FORMAT_DATE, strtotime($cabecera['fechae'])),0,1,'L');
 
         //Nota de entrega
         $this->SetFont('Arial','B',14);
@@ -176,7 +184,7 @@ $pdf->Ln(10);
 
 
 $pdf->SetFont('Arial','B',8);
-if($descuentototal > 0) {
+if($descuentototal >= 0) {
     $pdf->Cell(155,8, "",0,0,'L');
     $pdf->SetFont('Arial','B',8);
     $pdf->Cell(15,8, "Sub Total: ",0,0,'L');
@@ -196,13 +204,19 @@ $pdf->Cell(8,8, "",0,0,'L');
 $pdf->SetFont('Arial','B',8);
 $pdf->Cell(9,8, "Total: ",0,0,'L');
 $pdf->SetFont('');
-$pdf->Cell(33,8, Strings::rdecimal($totalnota, 2),0,1,'L');
+$pdf->Cell(33,8, ($totalnota),0,1,'L');
 $pdf->Ln(5);
 $pdf->SetFont('Arial','',9);
 $pdf->Cell(77);
 $pdf->Cell(30,10,'SIN DERECHO A CREDITO FISCAL',0,1,'C');
+$pdf->Ln(-5);
 $pdf->Cell(0,10,'VERIFIQUE SU MERCANCIA, NO SE ACEPTAN RECLAMOS DESPUES DE HABER FIRMADO',0,1,'C');
-$pdf->Cell(0,10,'Y SELLADO ESTA NOTA DE ENTREGA.',0,1,'C');
+$pdf->Ln(-5);
+$pdf->Cell(0,10,'Y SELLADO ESTA NOTA DE ENTREGA.',0,0,'C');
+$pdf->SetFont('Arial','B',8); 
+$pdf->Cell(0,5,'"GRACIAS POR PREFERIRNOS".',0,1,'C');
+
+
 $pdf->Ln(30);
 
 // lineas de firma

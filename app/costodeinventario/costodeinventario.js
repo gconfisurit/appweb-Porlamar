@@ -89,12 +89,18 @@ function imprimir_tabla(data) {
                         '<td>' + opt.marca + '</td>' +
                         '<td>' + opt.costo + '</td>' +
                         '<td>' + opt.cdisplay + '</td>' +
+                    '<td>' + opt.costod + '</td>' +
+                    '<td>' + opt.cdisplayd + '</td>' +
                         '<td>' + opt.precio + '</td>' +
                         '<td>' + opt.bultos + '</td>' +
                         '<td>' + opt.paquetes + '</td>' +
                         '<td>' + opt.costoxbulto + '</td>' +
                         '<td>' + opt.cdisplayxpaquetes + '</td>' +
-                        '<td>' + opt.tara + '</td>' +
+                    '<td>' + opt.costoxbultod + '</td>' +
+                    '<td>' + opt.cdisplayxpaquetesd + '</td>' +
+                    '<td>' + opt.tara + '</td>' + 
+                    '<td>' + opt.costototalbs + '</td>' + 
+                    '<td>' + opt.costototal + '</td>' + 
                     '</tr>'
                 );
         });
@@ -107,12 +113,18 @@ function imprimir_tabla(data) {
                     '<td colspan="3" align="right"><strong>Totales: </strong></td>' +
                     '<td>' + data.totales_tabla.costos + '</td>' +
                     '<td>' + data.totales_tabla.costos_p + '</td>' +
+                '<td>' + data.totales_tabla.costosd + '</td>' +
+                '<td>' + data.totales_tabla.costos_pd + '</td>' +
                     '<td>' + data.totales_tabla.precios + '</td>' +
                     '<td>' + data.totales_tabla.bultos + '</td>' +
                     '<td>' + data.totales_tabla.paquetes + '</td>' +
                     '<td>' + data.totales_tabla.total_costo_bultos + '</td>' +
                     '<td>' + data.totales_tabla.total_costo_paquetes + '</td>' +
+                '<td>' + data.totales_tabla.total_costo_bultosd + '</td>' +
+                '<td>' + data.totales_tabla.total_costo_paquetesd + '</td>' +
                     '<td>' + data.totales_tabla.total_tara + '</td>' +
+                '<td>' + data.totales_tabla.total_costototalbs + '</td>' +
+                '<td>' + data.totales_tabla.total_costototal + '</td>' +
                 '</tr>'
             );
 

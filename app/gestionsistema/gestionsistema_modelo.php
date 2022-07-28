@@ -8,7 +8,7 @@ class Gestionsistema extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -28,7 +28,7 @@ class Gestionsistema extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -48,7 +48,7 @@ class Gestionsistema extends Conectar
     public function editar_estado_modulo($id, $estado)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -64,7 +64,7 @@ class Gestionsistema extends Conectar
     public function eliminar_modulo($id) {
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion();
         parent::set_names();
 
@@ -81,7 +81,7 @@ class Gestionsistema extends Conectar
     public function editar_menuid_en_modulo($id, $menu_id)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -98,7 +98,7 @@ class Gestionsistema extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -119,7 +119,7 @@ class Gestionsistema extends Conectar
     {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -140,7 +140,7 @@ class Gestionsistema extends Conectar
     public function editar_estado_menu($id, $estado)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -156,7 +156,7 @@ class Gestionsistema extends Conectar
     public function eliminar_menu($id) {
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion();
         parent::set_names();
 
@@ -173,7 +173,7 @@ class Gestionsistema extends Conectar
     public function editar_menuportipo_en_menu($id, $menu_id, $tipo)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 

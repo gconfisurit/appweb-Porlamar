@@ -59,7 +59,7 @@ function graficar(labels, values, highscore = 100, offset = 5, symbol = '', $id,
                                 value /= 1000
                                 value += 'k'
                             }*/
-                            return '$' + value.format_money(2, 3, '.', ',');
+                            return '' + value.format_money(0, 3, '.', ',');
                         }
                     }, ticksStyle)
                 }],

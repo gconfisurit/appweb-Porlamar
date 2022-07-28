@@ -96,7 +96,7 @@ foreach ($query as $i) {
         $total = number_format($i["SaldoPend"], 2, ',', '.');
 
         $fecha_E = date('d/m/Y', strtotime($i["FechaEmi"]));
-        $fecha_D = date('d/m/Y', strtotime($i["FechaDesp"]));
+        //$fecha_D = date('d/m/Y', strtotime($i["FechaDesp"]));
 
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setCellValue('A' . $row, $i['TipoOpe']);

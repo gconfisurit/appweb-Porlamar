@@ -13,6 +13,7 @@ $sellin = new sellin();
 $fechai = $_GET['fechai'];
 $fechaf = $_GET['fechaf'];
 $marca = $_GET['marca'];
+$tipo = $_GET['tipo'];
 
 $j = 0;
 $width = array();
@@ -45,34 +46,85 @@ class PDF extends FPDF
         // titulo de columnas
         $this->Cell(addWidthInArray(32), 6, utf8_decode(Strings::titleFromJson('codigo_prod')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(60), 6, utf8_decode(Strings::titleFromJson('descrip_prod')), 1, 0, 'C', true);
-        $this->Cell(addWidthInArray(20), 6, utf8_decode(Strings::titleFromJson('compra')), 1, 0, 'C', true);
-        $this->Cell(addWidthInArray(36), 6, utf8_decode(Strings::titleFromJson('devolucion_compra')), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(30), 6, utf8_decode("Compra de Factura"), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(36), 6, utf8_decode("Devolución de Factura"), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(30), 6, utf8_decode("Compra de NE"), 1, 0, 'C', true);
+        $this->Cell(addWidthInArray(36), 6, utf8_decode("Devolución de NE"), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(23), 6, utf8_decode(Strings::titleFromJson('total')), 1, 0, 'C', true);
         $this->Cell(addWidthInArray(20), 6, utf8_decode(Strings::titleFromJson('marca_prod')), 1, 1, 'C', true);
     }
 }
 
-$pdf = new PDF();
+$pdf = new PDF('L');
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial', '', 7);
 
 $pdf->SetWidths($width);
 
-$query =  $sellin->getsellin($fechai, $fechaf, $marca);
+$query =  $sellin->getsellin($fechai, $fechaf, $marca ,$tipo);
 
 foreach ($query as $i) {
 
-    $pdf->Row(
-        array(
-            $i['coditem'],
-            utf8_encode($i['producto']),
-            Strings::rdecimal($i['compras'], 2),
-            Strings::rdecimal($i['devol'], 2),
-            Strings::rdecimal($i['total'],2),
-            $i['marca']
-        )
-    );
+
+     if($tipo=='f'){
+
+            $pdf->Row(
+                array(
+                    $i['coditem'],
+                    utf8_encode($i['producto']),
+                    number_format(0, 2),
+                    number_format(0, 2),
+                    number_format($i['compras'], 2),
+                    number_format($i['devol'], 2),
+                    number_format($i['total'],2),
+                    $i['marca']
+                )
+            );
+
+
+    }else{
+
+             if($tipo=='n'){
+
+                  $pdf->Row(
+                        array(
+                            $i['coditem'],
+                            utf8_encode($i['producto']),
+                            number_format($i['compras'], 2),
+                            number_format($i['devol'], 2),
+                            number_format(0, 2),
+                            number_format(0, 2),
+                            number_format($i['total'],2),
+                            $i['marca']
+                        )
+                    );
+
+
+            }else{
+
+                 if($tipo=='Todos'){
+
+                      $pdf->Row(
+                            array(
+                                $i['coditem'],
+                                utf8_encode($i['producto']),
+                                number_format($i['compras'], 2),
+                                number_format($i['devol'], 2),
+                                number_format($i['compras_notas'], 2),
+                                number_format($i['devol_notas'], 2),
+                                number_format($i['total'],2),
+                                $i['marca']
+                            )
+                        );
+
+                    
+                    }
+
+                }
+
+
+            }
 }
 $pdf->Output();
 

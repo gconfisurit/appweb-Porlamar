@@ -5,9 +5,15 @@ class KpiMarcas extends Conectar
     public static function todos($orden = 'ASC')
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql = "SELECT id, descripcion, fechae FROM Kpi_marcas ORDER BY id $orden";
+
+        /* $sql = "SELECT distinct  sainsta.CodInst, sainsta.Descrip
+			from [MCONFISUR_D].[dbo].sainsta 
+			inner join [MCONFISUR_D].[dbo].saprod on saprod.CodInst = sainsta.CodInst
+			inner join [MCONFISUR_D].[dbo].saexis on saexis.CodProd = saprod.CodProd 
+			where (saexis.codubic = '01') and (saexis.Existen > 0 or saexis.ExUnidad>0) ORDER BY sainsta.CodInst $orden ";*/
 
         $result = (new Conectar())->conexion()->prepare($sql);
         $result->execute();
@@ -23,7 +29,7 @@ class KpiMarcas extends Conectar
     ) {
         $i = 0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $cells_fact =
             $detalle == true

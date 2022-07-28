@@ -24,8 +24,8 @@ $(document).ready(function(){
 //ACCION AL PRECIONAR EL BOTON.
 $(document).on("click", "#btn_consultar", function () {
 
-    const documentoi = $("#nrodocumento_inicial").val();
-    const documentof = $("#nrodocumento_final").val();
+    const documentoi = addZeros($("#nrodocumento_inicial").val());
+    const documentof = addZeros($("#nrodocumento_final").val());
 
     if (!estado_vacio && documentoi !== "000000" && documentof !== "000000") {
         window.open("notadeentregaporrango_pdf.php?&documentoi="+documentoi+"&documentof="+documentof, "_blank");

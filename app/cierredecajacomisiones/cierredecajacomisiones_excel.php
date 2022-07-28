@@ -73,7 +73,7 @@ $sheet->setCellValue('A5', 'fecha tope:  '. date('d-m-Y'));
 $spreadsheet->getActiveSheet()->mergeCells('A1:C1');
 
 /** TITULO DE LA TABLA **/
-$sheet->setCellValue('A7', utf8_decode(Strings::titleFromJson('codvend')))
+$sheet->setCellValue('A7', "Código EDV")
     ->setCellValue('B7', Strings::titleFromJson('numero_unico'))
     ->setCellValue('C7', Strings::titleFromJson('cod_operacion'))
     ->setCellValue('D7', Strings::titleFromJson('factura'))
@@ -98,7 +98,7 @@ $query = $comisiones->getcomision( $fechai, $fechaf,$ruta,$tipo);
 $row = 8;
 foreach ($query as $i) {
 
-    $total = number_format($i["Monto"], 2, ',', '.');
+    $total = $i["Monto"];
 
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setCellValue('A' . $row, $i['EDV']);
@@ -110,7 +110,7 @@ foreach ($query as $i) {
     $sheet->setCellValue('G' . $row, $i['DiasTrans']);
     $sheet->setCellValue('H' . $row, $i['Codclie']);
     $sheet->setCellValue('I' . $row, $i['Descrip']);
-    $sheet->setCellValue('J' . $row, $total);
+    $sheet->setCellValue('J' . $row, ($total));
 
     /** centrar las celdas **/
     $spreadsheet->getActiveSheet()->getStyle('A'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));

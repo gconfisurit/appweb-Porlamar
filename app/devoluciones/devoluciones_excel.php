@@ -74,14 +74,15 @@ $sheet->setCellValue('A5', 'fecha tope:  '. date('d-m-Y'));
 $spreadsheet->getActiveSheet()->mergeCells('A1:C1');
 
 /** TITULO DE LA TABLA **/
-$sheet->setCellValue('A7', utf8_decode(Strings::titleFromJson('tipo_transaccion')))
+$sheet->setCellValue('A7', utf8_decode('Tipo de Transaccion'))
     ->setCellValue('B7', Strings::titleFromJson('descrip_vend'))
     ->setCellValue('C7', Strings::titleFromJson('numerod'))
     ->setCellValue('D7', Strings::titleFromJson('fecha_devolucion'))
     ->setCellValue('E7', Strings::titleFromJson('codclie'))
     ->setCellValue('F7', Strings::titleFromJson('cliente'))
     ->setCellValue('G7', Strings::titleFromJson('chofer'))
-    ->setCellValue('H7', Strings::titleFromJson('monto'));
+    ->setCellValue('H7', Strings::titleFromJson('monto'))
+    ->setCellValue('I7', 'Motivo');
 
 $style_title = new Style();
 $style_title->applyFromArray(
@@ -90,7 +91,7 @@ $style_title->applyFromArray(
 
 
 //estableceer el estilo de la cabecera de la tabla
-$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:H7');
+$spreadsheet->getActiveSheet()->duplicateStyle($style_title, 'A7:I7');
 
 $query = $devoluciones->getdevoluciones( $fechai, $fechaf,$ruta,$tipo);
 
@@ -116,6 +117,7 @@ foreach ($query as $i) {
             $sheet->setCellValue('F' . $row, $i['cliente']);
             $sheet->setCellValue('G' . $row, $i['chofer']);
             $sheet->setCellValue('H' . $row, $total);
+            $sheet->setCellValue('I' . $row, $i['motivo']);
    
 
     /** centrar las celdas **/
@@ -127,6 +129,7 @@ foreach ($query as $i) {
     $spreadsheet->getActiveSheet()->getStyle('F'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('G'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $spreadsheet->getActiveSheet()->getStyle('H'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
+     $spreadsheet->getActiveSheet()->getStyle('I'.$row)->applyFromArray(array('alignment' => array('horizontal'=> \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical'  => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'wrap' => TRUE)));
     $row++;
 }
 

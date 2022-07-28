@@ -8,7 +8,7 @@ class analisisdevencimiento extends Conectar{
 	public function getanalisisdevencimiento($fechai, $fechaf, $codprov){
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
        $conectar= parent::conexion2();
        parent::set_names();
 

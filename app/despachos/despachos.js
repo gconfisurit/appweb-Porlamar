@@ -25,9 +25,10 @@ function init() {
     $("#minimizar").slideDown();
     $("#tabla_documentos_por_despachar").hide();
     $("#tabla_detalle_despacho").hide();
-    $( "#containerProgress" ).hide();
+    $("#containerProgress").hide();
     $('.nextBtn').attr("disabled", true);
     $('.generar').attr("disabled", true);
+    $('#anadir').attr("disabled", true);
     registros_por_despachar = "";
     peso_max_vehiculo = 0;
     cubicaje_max_vehiculo = 0;
@@ -37,6 +38,7 @@ function init() {
     valor_bg_progreso = "bg-success";
     listar_choferes();
     listar_vehiculo();
+    listar_documentos();
 }
 
 function limpiar() {
@@ -54,6 +56,18 @@ function limpiar() {
     peso_acum_documentos = 0;
     valor_bg_progreso = "bg-success";
 }
+
+$("#numero_d").click(function () {
+    valor = $("#numero_d").val();
+    if (valor == '') {
+        $('#anadir').attr("disabled", true);
+
+    } else {
+
+        $('#anadir').attr("disabled", false);
+
+    }
+});
 
 function limpiar_campo_documento() {
     $("#numero_d").val("");
@@ -79,7 +93,7 @@ let no_puede_estar_vacio = function () {
     //VALIDA PARA HABILITAR EL BOTON SIGUIENTE
     estado = !($("#fecha").val().length > 0 && $("#chofer").val().length > 0 && $("#vehiculo").val().length > 0 && $("#destino").val().length > 0);
     $('.nextBtn').attr("disabled", estado); //boton siguiente
-    
+
     //VALIDA PARA AÑADIR EN LA TABLA FACTURAS POR DESPACHAR DICHO REGISTRO
     estado1 = !($("#fecha").val().length > 0 && $("#chofer").val().length > 0 && $("#vehiculo").val().length > 0 && $("#destino").val().length > 0 && $("#numero_d").val().length > 0);
     $('.anadir').attr("disabled", estado1); //boton añadir
@@ -89,7 +103,7 @@ let no_puede_estar_vacio = function () {
 function onPressKey(e) {
     e.preventDefault(); //No se activará la acción predeterminada del evento
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla===13) anadirDocumentoPorDespachar();
+    if (tecla === 13) anadirDocumentoPorDespachar();
 }
 
 /*************************************************************************************************************/
@@ -101,7 +115,7 @@ function cargarCapacidadVehiculo(id) {
         url: "despachos_controlador.php?op=obtener_pesomaxvehiculo",
         method: "POST",
         dataType: "json",
-        data: {id: id},
+        data: { id: id },
         error: function (e) {
             SweetAlertError(e.responseText, "Error!")
             send_notification_error(e.responseText);
@@ -137,11 +151,11 @@ function buscarDocumentoEnDespachos(nro_documento, tipodoc) {
                 console.log(e.responseText);
             },
             success: function (data) {
-                if( !jQuery.isEmptyObject(data.mensaje) ) {
+                if (!jQuery.isEmptyObject(data.mensaje)) {
                     isError = true; // hubo un error
                     SweetAlertError(data.mensaje);
                 } else {
-                    if(!jQuery.isEmptyObject(data.documento_en_despacho)) {
+                    if (!jQuery.isEmptyObject(data.documento_en_despacho)) {
                         let { numerod, tipofac, correlativo, fechae, destino } = data.documento_en_despacho;
                         $("#detalle_despacho").append(
                             '<p>' +
@@ -153,14 +167,14 @@ function buscarDocumentoEnDespachos(nro_documento, tipodoc) {
                             '</p>'
                         );
 
-                        if(!jQuery.isEmptyObject(data.datos_pago)){
+                        if (!jQuery.isEmptyObject(data.datos_pago)) {
                             $("#detalle_despacho_liquidacion").append(
                                 '<p>' +
-                                '<strong>PAGO: </strong>  ' + data.datos_pago.fecha_liqui +  '  ' +
+                                '<strong>PAGO: </strong>  ' + data.datos_pago.fecha_liqui + '  ' +
                                 '<strong>POR UN MONTO DE: </strong>  ' + data.datos_pago.monto_cancelado + ' BsS' +
                                 '</p>'
                             );
-                        }else{
+                        } else {
                             $("#detalle_despacho_liquidacion").append('<br>DOCUMENTO NO LIQUIDADO');
                         }
                     } else {
@@ -169,7 +183,7 @@ function buscarDocumentoEnDespachos(nro_documento, tipodoc) {
                 }
             },
             complete: function () {
-                if(!isError) SweetAlertLoadingClose();
+                if (!isError) SweetAlertLoadingClose();
             }
         });
     } else {
@@ -178,7 +192,7 @@ function buscarDocumentoEnDespachos(nro_documento, tipodoc) {
     }
 }
 
-function listar_choferes(){
+function listar_choferes() {
     $.ajax({
         url: "despachos_controlador.php?op=listar_choferes",
         type: "POST",
@@ -191,15 +205,15 @@ function listar_choferes(){
         success: function (data) {
             //lista de seleccion de choferes
             $('#chofer').append('<option name="" value="">Seleccione</option>');
-            $.each(data.lista_choferes, function(idx, opt) {
+            $.each(data.lista_choferes, function (idx, opt) {
                 //se itera con each para llenar el select en la vista
-                $('#chofer').append('<option name="" value="' + opt.cedula +'">' + opt.descripcion + '</option>');
+                $('#chofer').append('<option name="" value="' + opt.cedula + '">' + opt.descripcion + '</option>');
             });
         }
     });
 }
 
-function listar_vehiculo(){
+function listar_vehiculo() {
     $.ajax({
         url: "despachos_controlador.php?op=listar_vehiculo",
         type: "POST",
@@ -212,9 +226,31 @@ function listar_vehiculo(){
         success: function (data) {
             //lista de seleccion de vehiculos
             $('#vehiculo').append('<option name="" value="">Seleccione</option>');
-            $.each(data.lista_vehiculos, function(idx, opt) {
+            $.each(data.lista_vehiculos, function (idx, opt) {
                 //se itera con each para llenar el select en la vista
-                $('#vehiculo').append('<option name="" value="' + opt.id +'">' + opt.modelo + "  " + opt.capacidad + " Kg" + '</option>');
+                $('#vehiculo').append('<option name="" value="' + opt.placa + '">'+ opt.placa + " -- "  + opt.modelo + " , " + opt.capacidad + " Kg" + '</option>');
+            });
+        }
+    });
+}
+
+
+function listar_documentos() {
+    $.ajax({
+        url: "despachos_controlador.php?op=listar_documentos",
+        type: "POST",
+        dataType: "json",
+        error: function (e) {
+            SweetAlertError(e.responseText, "Error!")
+            send_notification_error(e.responseText);
+            console.log(e.responseText);
+        },
+        success: function (data) {
+            //lista de seleccion de vehiculos
+            $('#numero_d').append('<option name="" value="">Seleccione</option>');
+            $.each(data.lista_documentos, function (idx, opt) {
+                //se itera con each para llenar el select en la vista
+                $('#numero_d').append('<option name="" value="' + opt.NumeroD + '">' + opt.NumeroD + "  " + opt.Descrip + '</option>');
             });
         }
     });
@@ -230,7 +266,8 @@ $(document).ready(function () {
     //VALIDA CADA INPUT CUANDO ES CAMBIADO DE ESTADO
     $("#fecha").change(() => no_puede_estar_vacio());
     $("#chofer").change(() => no_puede_estar_vacio());
-    $("#vehiculo").change(() => { no_puede_estar_vacio();
+    $("#vehiculo").change(() => {
+        no_puede_estar_vacio();
         cargarCapacidadVehiculo($("#vehiculo").val());
     });
     $("#destino").on('keyup', () => no_puede_estar_vacio()).keyup();
@@ -269,7 +306,7 @@ function VistasDeFormulario() {
         }
     });
 
-    allNextBtn.click(function(){
+    allNextBtn.click(function () {
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
@@ -277,8 +314,8 @@ function VistasDeFormulario() {
             isValid = true;
 
         $(".form-group").removeClass("has-error");
-        for(var i=0; i<curInputs.length; i++){
-            if (!curInputs[i].validity.valid){
+        for (var i = 0; i < curInputs.length; i++) {
+            if (!curInputs[i].validity.valid) {
                 isValid = false;
                 $(curInputs[i]).closest(".form-group").addClass("has-error");
             }
@@ -296,13 +333,13 @@ function VistasDeFormulario() {
 /*************************************************************************************************************/
 
 function anadir(documento, tipofac, tara, cubicaje) {
-    if(documento.length > 0) {
+    if (documento.length > 0) {
         registros_por_despachar += (`${documento}-${tipofac}-${tara}-${cubicaje};`);
     }
 }
 
 function eliminar(documento, tipodoc) {
-    if(documento.length > 0) {
+    if (documento.length > 0) {
         $.ajax({
             url: "despachos_controlador.php?op=eliminar_documento_para_anadir",
             type: "POST",
@@ -338,27 +375,27 @@ function eliminar(documento, tipodoc) {
     }
 }
 
-function barraDeProgreso(colorFondo, pesoAcumulado, porcentajePeso, cubicajeAcumlulado, porcentajeCubicaje){
+function barraDeProgreso(colorFondo, pesoAcumulado, porcentajePeso, cubicajeAcumlulado, porcentajeCubicaje) {
     //modifica el texto de los kilos acumulados vs el maximo de carga
-    $( "#textoBarraProgreso" )
+    $("#textoBarraProgreso")
         .removeClass(valor_bg_progreso)
         .addClass(colorFondo)
-        .text(rounding2decimal(pesoAcumulado)+" kg  /  "+peso_max_vehiculo+" kg"+"   ("+parseInt(porcentajePeso)+"%)");
+        .text(rounding2decimal(pesoAcumulado) + " kg  /  " + peso_max_vehiculo + " kg" + "   (" + parseInt(porcentajePeso) + "%)");
 
     //modifica la bara de progreso del peso acumulado
     $("#barraProgreso")
         .removeClass(valor_bg_progreso)
         .addClass(colorFondo)
-        .css('width', porcentajePeso+'%')
+        .css('width', porcentajePeso + '%')
         .attr("aria-valuenow", porcentajePeso);
 
     //modifica el texto del cubicaje acumulado vs el maximo de volumen
-    $( "#textoBarraProgresoCubicaje" )
-        .text(rounding2decimal(cubicajeAcumlulado)+" cm3  /  "+cubicaje_max_vehiculo+" cm3"+"   ("+parseInt(porcentajeCubicaje)+"%)");
+    $("#textoBarraProgresoCubicaje")
+        .text(rounding2decimal(cubicajeAcumlulado) + " cm3  /  " + cubicaje_max_vehiculo + " cm3" + "   (" + parseInt(porcentajeCubicaje) + "%)");
 
     //modifica la bara de progreso del cubicaje acumulado
     $("#barraProgresoCubicaje")
-        .css('width', porcentajeCubicaje+'%')
+        .css('width', porcentajeCubicaje + '%')
         .attr("aria-valuenow", porcentajeCubicaje);
 
     //guardamos el valor del background del peso acumulado
@@ -370,13 +407,14 @@ function barraDeProgreso(colorFondo, pesoAcumulado, porcentajePeso, cubicajeAcum
 /*************************************************************************************************************/
 
 //ACCION AL PRECIONAR EL BOTON AÑADIR.
-$(document).on("click", ".anadir", function () {
+$(document).on("click", "#anadir", function () {
+
     anadirDocumentoPorDespachar();
 });
 
 function anadirDocumentoPorDespachar() {
     let isError = false;
-    const tipodoc = $('input:radio[name=tipo]:checked').val()
+    // const tipodoc = $('input:radio[name=tipo]:checked').val()
     const documento = addZeros($("#numero_d").val());
 
     $.ajax({
@@ -384,7 +422,7 @@ function anadirDocumentoPorDespachar() {
         method: "post",
         dataType: "json",
         data: {
-            documento: documento, tipodoc: tipodoc,
+            documento: documento,
             registros_por_despachar: registros_por_despachar,
             peso_acum_documentos: peso_acum_documentos,
             peso_max_vehiculo: peso_max_vehiculo,
@@ -394,36 +432,36 @@ function anadirDocumentoPorDespachar() {
         beforeSend: function () {
             SweetAlertLoadingShow('Validando documento, espere...');
             //inabilita el boton añadir
-            $('.anadir').attr("disabled", true);
+            $('#anadir').attr("disabled", true);
         },
         error: function (e) {
-            isError = SweetAlertError(e.responseText, "Error!")
-            send_notification_error(e.responseText);
+            /* isError = SweetAlertError(e.responseText, "Error!")
+             send_notification_error(e.responseText);*/
             console.log(e.responseText);
         },
         success: function (data) {
-            if( data.cond === false ) {
-                isError = true; // hubo un error
-                SweetAlertError(data.mensaje);
-            } else {
+            /*  if( data.cond === false ) {
+                  isError = true; // hubo un error
+                  SweetAlertError(data.mensaje);
+              } else {*/
 
-                // agregar documento por despachar
-                anadir(data.numerod, data.tipodoc, data.peso, data.cubicaje);
+            // agregar documento por despachar
+            anadir(data.numerod, data.tipodoc, data.peso, data.cubicaje);
 
-                peso_acum_documentos = data.pesoNuevoAcum.toString();
-                cubicaje_acum_documentos = data.cubicajeNuevoAcum.toString();
+            peso_acum_documentos = data.pesoNuevoAcum.toString();
+            cubicaje_acum_documentos = data.cubicajeNuevoAcum.toString();
 
-                // cargar tabla de documentos por despachar
-                cargarTabladeDocumentosporDespachar();
+            // cargar tabla de documentos por despachar
+            cargarTabladeDocumentosporDespachar();
 
-                // seteamos la barra de progreso
-                barraDeProgreso(data.bgProgreso, data.pesoNuevoAcum, data.porcentajePeso, data.cubicajeNuevoAcum, data.porcentajeCubicaje);
-            }
+            // seteamos la barra de progreso
+            barraDeProgreso(data.bgProgreso, data.pesoNuevoAcum, data.porcentajePeso, data.cubicajeNuevoAcum, data.porcentajeCubicaje);
+            // }
         },
         complete: function () {
-            if(!isError) SweetAlertLoadingClose();
+            if (!isError) SweetAlertLoadingClose();
             //inabilita el boton añadir
-            $('.anadir').attr("disabled", false);
+            $('#anadir').attr("disabled", false);
         }
     });
 
@@ -438,69 +476,72 @@ $(document).on("click", ".generar", function () {
     var destino = $("#destino").val().toUpperCase();
     var usuario = $("#ci_usuario").val();
 
-    if( parseFloat(peso_acum_documentos) <= parseFloat(peso_max_vehiculo) ){
+    //if( parseFloat(peso_acum_documentos) <= parseFloat(peso_max_vehiculo) ){
 
-        if (estado_minimizado) {
-            // estado_minimizado = false;
-            if (fecha !== "" && chofer !== "" && vehiculo !== "" && destino !== "" && registros_por_despachar.length > 0) {
-                let isError = false;
-                //INSERTAR EL NUEVO DESPACHO
-                $.ajax({
-                    url: "despachos_controlador.php?op=registrar_despacho",
-                    method: "POST",
-                    dataType: "json",
-                    data: {
-                        fechad: fecha,
-                        chofer: chofer,
-                        vehiculo: vehiculo,
-                        destino: destino,
-                        usuario: usuario,
-                        registros_por_despachar: registros_por_despachar
-                    },
-                   beforeSend: function () {
-                        SweetAlertLoadingShow('Generando Despachado, espere...');
-                        //inabilita el boton añadir
-                        $('.generar').attr("disabled", true);
-                    },
-                    error: function (e) {
-                        isError = SweetAlertError(e.responseText, "Error!")
-                        send_notification_error(e.responseText);
-                        console.log(e.responseText);
-                    },
-                    success: function (data) {
-                        let {icono, mensaje} = data;
-                        ToastSweetMenssage(icono, mensaje);
+    if (estado_minimizado) {
+        // estado_minimizado = false;
+        if (fecha !== "" && chofer !== "" && vehiculo !== "" && destino !== "" && registros_por_despachar.length > 0) {
+            let isError = false;
+            //INSERTAR EL NUEVO DESPACHO
+            $.ajax({
+                url: "despachos_controlador.php?op=registrar_despacho",
+                method: "POST",
+                dataType: "json",
+                data: {
+                    fechad: fecha,
+                    chofer: chofer,
+                    vehiculo: vehiculo,
+                    destino: destino,
+                    usuario: usuario,
+                    registros_por_despachar: registros_por_despachar
+                },
+                beforeSend: function () {
+                    SweetAlertLoadingShow('Generando Despachado, espere...');
+                    //inabilita el boton añadir
+                    $('.generar').attr("disabled", true);
+                },
+                error: function (e) {
+                    /*isError = SweetAlertError(e.responseText, "Error!")
+                    send_notification_error(e.responseText);*/
+                    console.log(e.responseText);
+                },
+                success: function (data) {
+                    let { icono, mensaje } = data;
+                    ToastSweetMenssage(icono, mensaje);
 
-                        //verifica si el mensaje de insercion contiene error
-                        if(mensaje.includes('ERROR')) {
-                            return (false);
-                        } else {
-                            $("#tabla_documentos_por_despachar").hide();
-                            $("#minimizar").slideToggle();///MINIMIZAMOS LA TARJETA.
+                    //verifica si el mensaje de insercion contiene error
+                    if (mensaje.includes('ERROR')) {
+                        return (false);
+                    } else {
+                        $("#tabla_documentos_por_despachar").hide();
+                        $("#minimizar").slideToggle();///MINIMIZAMOS LA TARJETA.
 
-                            sessionStorage.setItem("correl", data.correl);
-                            //en caso de no contener error, muestra la tabla
-                            cargarTabladeProductosEnDespachoCreado(data.correl);
-                        }
-                    },
-                    complete: function () {
-                        if(!isError) SweetAlertLoadingClose();
-                        //inabilita el boton añadir
-                        $('.generar').attr("disabled", false);
+                        sessionStorage.setItem("correl", data.correl);
+                        //en caso de no contener error, muestra la tabla
+                        //cargarTabladeProductosEnDespachoCreado(data.correl);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
                     }
-                });
+                },
+                complete: function () {
+                    if (!isError) SweetAlertLoadingClose();
+                    //inabilita el boton añadir
+                    $('.generar').attr("disabled", false);
+                }
+            });
 
-                estado_minimizado = true;
-            } else {
-                SweetAlertError('NO TIENE FACTURAS SELECCIONADAS.', "Atención!")
-                return (false);
-            }
+            estado_minimizado = true;
+        } else {
+            SweetAlertError('NO TIENE FACTURAS SELECCIONADAS.', "Atención!")
+            return (false);
         }
-    } else {
-        SweetAlertError('EL PESO DE LA MERCANCIA SOBREPASA LA CAPACIDAD QUE SOPORTA ESTE CAMION.', "Atención!")
-        return (false);
-
     }
+    /* } else {
+         SweetAlertError('EL PESO DE LA MERCANCIA SOBREPASA LA CAPACIDAD QUE SOPORTA ESTE CAMION.', "Atención!")
+         return (false);
+ 
+     }*/
 });
 
 //ACCION AL PRECIONAR EL BOTON EXCEL.
@@ -531,7 +572,7 @@ $(document).on("click", "#btnBuscarDocModal", function () {
 
 function cargarTabladeDocumentosporDespachar() {
     let isError = false;
-    if(registros_por_despachar.toString().length > 0){
+    if (registros_por_despachar.toString().length > 0) {
         tabla_por_despachar = $('#docs_por_despachar_data').dataTable({
             "aProcessing": true,//ACTIVAMOS EL PROCESAMIENTO DEL DATATABLE.
             "aServerSide": true,//PAGINACION Y FILTROS REALIZADOS POR EL SERVIDOR.
@@ -539,7 +580,7 @@ function cargarTabladeDocumentosporDespachar() {
                 url: "despachos_controlador.php?op=obtener_documentosporcargardespacho",
                 type: "post",
                 dataType: "json",
-                data: {registros_por_despachar: registros_por_despachar},
+                data: { registros_por_despachar: registros_por_despachar },
                 beforeSend: function () {
                     SweetAlertLoadingShow();
                 },
@@ -551,19 +592,19 @@ function cargarTabladeDocumentosporDespachar() {
                 complete: function () {
                     //MUESTRA LA TABLA SI TIENE AL MENOS UN DESPACHO CARGADO EN MEMORIA POR REGISTRAR
                     //Y HABILITA EL BOTON GENERAR DESPACHO
-                    if(registros_por_despachar.length > 0){
+                    if (registros_por_despachar.length > 0) {
                         $('.generar').attr("disabled", false);//boton generar habilitado
                         $("#tabla_documentos_por_despachar").show();
-                        $( "#containerProgress" ).show();
+                        $("#containerProgress").show();
                         estado_minimizado = true;
                     } else {
                         $('.generar').attr("disabled", true);//boton generar inabilitado
                         $("#tabla_documentos_por_despachar").hide();
-                        $( "#containerProgress" ).hide();
+                        $("#containerProgress").hide();
                         estado_minimizado = false;
                     }
 
-                    if(!isError) SweetAlertLoadingClose();
+                    if (!isError) SweetAlertLoadingClose();
                     limpiar_campo_documento();//LIMPIAMOS EL INPUT.
                 }
             },//TRADUCCION DEL DATATABLE.
@@ -576,7 +617,7 @@ function cargarTabladeDocumentosporDespachar() {
         });
     } else {
         $("#tabla_documentos_por_despachar").hide();
-        $( "#containerProgress" ).hide();
+        $("#containerProgress").hide();
     }
 }
 
@@ -587,7 +628,7 @@ function cargarTabladeProductosEnDespachoCreado(correlativo) {
     $.ajax({
         url: "despachos_controlador.php?op=listar_productos_despacho",
         type: "POST",
-        data: {correlativo: correlativo},
+        data: { correlativo: correlativo },
         dataType: "json",
         beforeSend: function () {
             SweetAlertLoadingShow();
@@ -597,9 +638,9 @@ function cargarTabladeProductosEnDespachoCreado(correlativo) {
             send_notification_error(e.responseText);
             console.log(e.responseText);
         },
-        success: function(data) {
-            if(!jQuery.isEmptyObject(data)) {
-                let {contenido_tabla, totales_tabla} = data;
+        success: function (data) {
+            if (!jQuery.isEmptyObject(data)) {
+                let { contenido_tabla, totales_tabla } = data;
                 //TABLA
                 tabla_despachos = $('#despacho_general_data').dataTable({
                     "aProcessing": true,//ACTIVAMOS EL PROCESAMIENTO DEL DATATABLE.
@@ -627,7 +668,7 @@ function cargarTabladeProductosEnDespachoCreado(correlativo) {
         },
         complete: function () {
             $("#tabla_detalle_despacho").show('');//MOSTRAMOS LA TABLA.
-            if(!isError) SweetAlertLoadingClose();
+            if (!isError) SweetAlertLoadingClose();
             validarCantidadRegistrosTabla();
         }
     });

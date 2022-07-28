@@ -27,12 +27,12 @@ switch ($_GET["op"]) {
         $coditem = $cantidad = $tipo = array();
         $t = 0;
 
-        $devolucionesDeFactura = Factura::getInvoiceReturns($fechai, $fechaf, $depos);
+        $devolucionesDeFactura = $invglobal->facturasindespachar($fechai, $fechaf, $depos);
         if(count($devolucionesDeFactura) > 0) {
             foreach ($devolucionesDeFactura as $devol) {
-                $coditem[] = $devol['coditem'];
-                $cantidad[] = $devol['cantidad'];
-                $tipo[] = $devol['esunid'];
+                $coditem[] = $devol['descrip'];
+                $cantidad[] = $devol['numerod'];
+                $tipo[] = $devol['NumeroR'];
                 $t += 1;
             }
         }

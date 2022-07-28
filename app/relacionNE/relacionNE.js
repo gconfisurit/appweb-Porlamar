@@ -135,8 +135,6 @@ $(document).on("click", "#btn_consultar", function () {
                         });
     
                         $('#total_registros').html(
-
-                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Sub-Total:   <code>' + data.Mtosubtotal + '  $</code>   '+
                             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototal + '  $</code>   '
                         )
 

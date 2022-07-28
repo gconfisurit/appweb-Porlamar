@@ -68,10 +68,11 @@ $(document).ready(function(){
 
 //ACCION AL PRECIONAR EL BOTON.
 $(document).on("click", "#btn_sellin", function () {
-
+    $("#sellin_data").dataTable().fnDestroy();
     var fechai = $("#fechai").val();
     var fechaf = $("#fechaf").val();
     var marca = $("#marca").val();
+    var tipo = $("#tipo").val();
 
     if (estado_minimizado) {
         $("#tabla").hide();
@@ -81,6 +82,7 @@ $(document).on("click", "#btn_sellin", function () {
             sessionStorage.setItem("fechai", fechai);
             sessionStorage.setItem("fechaf", fechaf);
             sessionStorage.setItem("marca", marca);
+            sessionStorage.setItem("tipo", tipo);
             let isError = false;
             //CARGAMOS LA TABLA Y ENVIARMOS AL CONTROLADOR POR AJAX.
             tabla = $('#sellin_data').DataTable({
@@ -90,7 +92,7 @@ $(document).on("click", "#btn_sellin", function () {
                     url: "sellin_controlador.php?op=buscar_sellin",
                     type: "post",
                     dataType: "json",
-                    data: {fechai: fechai, fechaf: fechaf, marca: marca},
+                    data: { fechai:fechai, fechaf:fechaf, marca:marca, tipo:tipo },
                     beforeSend: function () {
                         SweetAlertLoadingShow();
                     },
@@ -136,11 +138,30 @@ $(document).on("click", "#btn_sellin", function () {
                             "language": texto_español_datatables
                         });
     
+                    if($("#tipo").val()=='f') {
+
                         $('#total_registros').html(
 
-                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Total Compra:   <code>' + data.Mtototal + '</code>   ' +
-                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Total Devoluciones:   <code>' + data.totalDevol + '</code>   '
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototal + '  Bs</code>   '
                         )
+
+                    }else{
+                        if ($("#tipo").val() == 'n') {
+
+                            $('#total_registros').html(
+
+                                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototald + '  $</code>   '
+                            )
+
+                        }
+                        $('#total_registros').html(
+
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototal + '  Bs</code>   '+
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Monto Total:   <code>' + data.Mtototald + '  $</code>   '
+                        )
+
+                    }
+                       
 
                         validarCantidadRegistrosTabla();
                         limpiar();
@@ -164,8 +185,10 @@ $(document).on("click","#btn_excel", function(){
    var fechai = sessionStorage.getItem("fechai", fechai);
    var fechaf = sessionStorage.getItem("fechaf", fechaf);
    var marca = sessionStorage.getItem("marca", marca);
-   if (fechai !== "" && fechaf !== "" && marca !== "") {
-    window.location = "sellin_excel.php?&fechai="+fechai+"&fechaf="+fechaf+"&marca="+marca;
+    var tipo = sessionStorage.getItem("tipo", tipo);
+
+    if (fechai !== "" && fechaf !== "" && marca !== "" && tipo !== "") {
+       window.location = "sellin_excel.php?&fechai=" + fechai + "&fechaf=" + fechaf + "&marca=" + marca + "&tipo=" + tipo;
 }
 });
 
@@ -174,8 +197,9 @@ $(document).on("click","#btn_pdf", function(){
     var fechai = sessionStorage.getItem("fechai", fechai);
     var fechaf = sessionStorage.getItem("fechaf", fechaf);
     var marca = sessionStorage.getItem("marca", marca);
-    if (fechai !== "" && fechaf !== "" && marca !== "") {
-        window.open('sellin_pdf.php?&fechai='+fechai+'&fechaf='+fechaf+'&marca='+marca, '_blank');
+    var tipo = sessionStorage.getItem("tipo", tipo);
+    if (fechai !== "" && fechaf !== "" && marca !== "" && tipo !== "") {
+        window.open('sellin_pdf.php?&fechai=' + fechai + '&fechaf=' + fechaf + '&marca=' + marca + '&tipo=' + tipo, '_blank');
     }
 });
 

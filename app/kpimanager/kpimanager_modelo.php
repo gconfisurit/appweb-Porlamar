@@ -7,7 +7,7 @@ class KpiManager extends Conectar {
     public function get_datos_edv($edv)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -27,7 +27,7 @@ class KpiManager extends Conectar {
     public function get_clases_edv()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -43,7 +43,7 @@ class KpiManager extends Conectar {
     public function get_objetivos_kpi()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion();
         parent::set_names();
 
@@ -58,7 +58,7 @@ class KpiManager extends Conectar {
 
     public function get_clientesPorEdv($edv) {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -78,7 +78,7 @@ class KpiManager extends Conectar {
     public function editar_estado_edv($id, $estado){
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar=parent::conexion2();
         parent::set_names();
 
@@ -92,7 +92,7 @@ class KpiManager extends Conectar {
 
     function get_datos_edv_antesactualizar($edv) {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar = parent::conexion2();
         parent::set_names();
 
@@ -109,7 +109,7 @@ class KpiManager extends Conectar {
     public function actualizar_edv($values){
 
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar=parent::conexion2();
         parent::set_names();
 
@@ -125,7 +125,7 @@ class KpiManager extends Conectar {
     public function actualizar_edv_02($values) {
         $i=0;
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar=parent::conexion2();
         parent::set_names();
 
@@ -137,12 +137,12 @@ class KpiManager extends Conectar {
 
         $sql=$conectar->prepare($sql);
         $sql->bindValue($i+=1, $values['nombre']);
-        $sql->bindValue($i+=1, $values['cedula']);
+        $sql->bindValue($i+=1, '');
         $sql->bindValue($i+=1, $values['supervisor']);
         $sql->bindValue($i+=1, $values['frecuencia']);
         $sql->bindValue($i+=1, $values['obj_ava']);
         $sql->bindValue($i+=1, $values['fotos_ava']);
-        $sql->bindValue($i+=1, $values['obj_clientes_captar']);
+        $sql->bindValue($i+=1, '');
         $sql->bindValue($i+=1, $values['obj_especial']);
         $sql->bindValue($i+=1, $values['logro_obj_especial']);
         $sql->bindValue($i+=1, $values['obj_ventas_divisas']);
@@ -158,7 +158,7 @@ class KpiManager extends Conectar {
 
     public function insertar_historico_cambio_kpi($idusuario, $edv) {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 
@@ -177,7 +177,7 @@ class KpiManager extends Conectar {
 
     public function insertar_cambio_historico_kpi($codigo, $campo, $antes, $despues) {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
         $conectar= parent::conexion2();
         parent::set_names();
 

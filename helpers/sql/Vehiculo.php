@@ -6,9 +6,9 @@ class Vehiculo extends Conectar
     public static function todos()
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
-        $sql = "SELECT *  FROM appvehiculo where estatus ='1'";
+        $sql = "SELECT *  FROM appvehiculo";
 
         $result = (new Conectar)->conexion2()->prepare($sql);
         $result->execute();
@@ -18,12 +18,12 @@ class Vehiculo extends Conectar
     public static function getById($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
-        $sql="SELECT id_vehiculo, placa, modelo, capacidad, volumen 
-                FROM appvehiculo WHERE  estatus ='1' and deleted_at IS NULL AND id_vehiculo=?";
+        $sql="SELECT id_vehiculos, placa, modelo, capacidad, volumen 
+                FROM appvehiculo WHERE  estatus ='1' AND palca=?";
 
-        $result = (new Conectar)->conexion()->prepare($sql);
+        $result = (new Conectar)->conexion2()->prepare($sql);
         $result->bindValue(1,$key);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ class Vehiculo extends Conectar
     public static function getByRegistration($key)
     {
         //LLAMAMOS A LA CONEXION QUE CORRESPONDA CUANDO ES SAINT: CONEXION2
-        //CUANDO ES APPWEB ES CONEXION.
+        //CUANDO ES appweb-Porlamar ES CONEXION.
 
         $sql="SELECT id, placa, modelo, capacidad, volumen, fecha_registro, estado 
                 FROM Vehiculos WHERE deleted_at IS NULL AND placa=?";

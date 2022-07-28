@@ -55,10 +55,10 @@ switch ($_GET["op"]) {
                     $thead[] = "Precio $aux1 Bulto";
                     $thead[] = "Precio $aux2 Bulto";
                     break;
-               /** 0 || 3**/  /*default: 
+                default: 
                     $thead[] = Strings::titleFromJson('precio1_bulto');
                     $thead[] = Strings::titleFromJson('precio2_bulto');
-                    $thead[] = Strings::titleFromJson('precio3_bulto');*/
+                    $thead[] = Strings::titleFromJson('precio3_bulto');
             }
             //<!--PAQUETES-->
 
@@ -79,10 +79,10 @@ switch ($_GET["op"]) {
                     $thead[] = "Precio $aux1 Paquete";
                     $thead[] = "Precio $aux2 Paquete";
                     break;
-               /** 0 || 3**/ /* default: 
+                 default: 
                     $thead[] = Strings::titleFromJson('precio1_paquete');
                     $thead[] = Strings::titleFromJson('precio2_paquete');
-                    $thead[] = Strings::titleFromJson('precio3_paquete');*/
+                    $thead[] = Strings::titleFromJson('precio3_paquete');
             }
             if ($cubi == 1) {
                 $thead[] = Strings::titleFromJson('cubicaje');
@@ -95,7 +95,7 @@ switch ($_GET["op"]) {
                 //DECLARAMOS UN SUB ARRAY Y LO LLENAMOS POR CADA REGISTRO EXISTENTE.
                 $sub_array = array();
     
-                if ($row['esexento']) {
+                if (!$row['esexento']) {
                     $precio1 = $row['precio1'] * $iva;
                     $precio2 = $row['precio2'] * $iva;
                     $precio3 = $row['precio3'] * $iva;
@@ -146,10 +146,10 @@ switch ($_GET["op"]) {
                             $sub_array[] = Strings::rdecimal($precio2, 2);
                         }
                         break;
-                  /** 0 || 3**/ /*  default: 
+                   default: 
                         $sub_array[] = Strings::rdecimal($precio1, 2);
                         $sub_array[] = Strings::rdecimal($precio2, 2);
-                        $sub_array[] = Strings::rdecimal($precio3, 2);*/
+                        $sub_array[] = Strings::rdecimal($precio3, 2);
                 }
                 // <!--PAQUETES-->
 
@@ -184,10 +184,10 @@ switch ($_GET["op"]) {
                             $sub_array[] = Strings::rdecimal($preciou2, 2);
                         }
                         break;
-                  /** 0 || 3**/ /* default: 
+                     default: 
                         $sub_array[] = Strings::rdecimal($preciou1, 2);
                         $sub_array[] = Strings::rdecimal($preciou2, 2);
-                        $sub_array[] = Strings::rdecimal($preciou3, 2);*/
+                        $sub_array[] = Strings::rdecimal($preciou3, 2);
                     }
                 if ($cubi == 1) {
                     $sub_array[] = $row['cubicaje'];

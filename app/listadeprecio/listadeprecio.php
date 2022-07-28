@@ -1,5 +1,5 @@
 <?php
-session_name('S1sTem@@PpWebGruP0C0nF1SuR');
+session_name('S1sTem@@PpWebGruP0C0nF1SuR_PLM');
 session_start();
 //LLAMAMOS A LA CONEXION.
 require_once("../../config/conexion.php");
@@ -119,7 +119,7 @@ if (!isset($_SESSION['cedula'])) {
                     <div class="card-header">
                         <h3 class="card-title">Clientes</h3>
                     </div>
-                    <div class="card-body" style="width:auto;">
+                    <div class="card-body table-responsive mt-2 p-0" style="width:100%; height:400px;">
                         <table class="table table-sm table-hover table-condensed table-bordered table-striped text-center" style="width:100%;" id="tablaprecios">
                             <thead style="background-color: #17A2B8;color: white;">
                                 <tr>

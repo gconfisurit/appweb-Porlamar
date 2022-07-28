@@ -78,7 +78,7 @@ $spreadsheet->getActiveSheet()->mergeCells('A1:F1');
 $row=7;
 /** TITULO DE LA TABLA **/
 $sheet->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('numerod'))
-    ->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codvend'))
+    ->setCellValue(getExcelCol($i).$row, "Código EDV")
     ->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('descrip_vend'))
     ->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('codclie'))
     ->setCellValue(getExcelCol($i).$row, Strings::titleFromJson('razon_social'))
